@@ -31,35 +31,12 @@ public class TweetSearchController extends Controller {
     public Result search() {
         // Fetch the topic name
         String topic = request().getQueryString("topic");
-        // Search the Twitter API for the given topic
-        TwitterSearch tweetSearch = new TwitterSearch(conf);
         try {
+            TwitterSearch tweetSearch = new TwitterSearch(conf);
+            // Fetch tweets from the API
             List<Status> tweets = tweetSearch.getTweets(new Query(topic));
-
-            Status tws = tweets.get(0);
-
-
             // Assign each tweet a sentiment value
             Map<String, Integer> sentimentMap = NLP.getSentimentMapping(tweets);
-
-
-            /**DB db = new MongoClient().getDB("dbname");
-
-            Jongo jongo = new Jongo(db);
-            MongoCollection friends = jongo.getCollection("friends");
-
-            MongoCursor<Friend> all = friends.find("{name: 'Joe'}").as(Friend.class);
-            Friend one = friends.findOne("{name: 'Joe'}").as(Friend.class);
-
-
-            Friend joe = new Friend("Joe", 27);
-
-            friends.save(joe);
-            joe.age = 28;
-            friends.save(joe);**/
-
-
-
             // Render sentiment-rated tweet listing
             return ok(show_tweets.render(sentimentMap));
         } catch (TwitterException e) {
