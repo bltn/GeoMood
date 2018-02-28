@@ -10,6 +10,8 @@ public class Tweet  {
     private GeoLocation geoLocation;
     private String userLocation;
 
+    private int sentimentValue;
+
     public ObjectId getId() {
         return _id;
     }
@@ -41,4 +43,13 @@ public class Tweet  {
     public void setUserLocation(String userLocation) {
         this.userLocation = userLocation;
     }
+
+    public int getSentimentValue() {
+        return sentimentValue;
+    }
+
+    public void setSentimentValue(int sentimentValue) {
+        this.sentimentValue = sentimentValue;
+    }
+
 }
