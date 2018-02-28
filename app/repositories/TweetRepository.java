@@ -13,7 +13,12 @@ public class TweetRepository {
     private static final Jongo jongoClient = new Jongo(DATABASE);
     private static final MongoCollection tweetCollection = jongoClient.getCollection("tweets");
 
-    public static void save(Tweet tweet) {
-        tweetCollection.save(tweet);
+    public static boolean save(Tweet tweet) {
+        if (tweet.getGeoLocation() != null || tweet.getUserLocation() != null) {
+            tweetCollection.save(tweet);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
