@@ -18,4 +18,7 @@ libraryDependencies += "edu.stanford.nlp" % "stanford-corenlp" % "3.8.0" classif
 libraryDependencies += "org.mongodb" % "mongo-java-driver" % "3.6.2"
 libraryDependencies += "org.jongo" % "jongo" % "1.3.0"
 
+libraryDependencies += "com.google.maps" % "google-maps-services" % "0.2.6"
+libraryDependencies += "org.slf4j" % "slf4j-nop" % "1.7.25"
+
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
