@@ -21,4 +21,8 @@ public class TweetRepository {
             return false;
         }
     }
+
+    public static void remove(Tweet tweet) {
+        tweetCollection.remove(tweet.getId());
+    }
 }
