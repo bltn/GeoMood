@@ -1,5 +1,6 @@
 package repositories;
 
+import com.google.maps.model.LatLng;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import models.Tweet;
@@ -8,6 +9,8 @@ import org.jongo.MongoCollection;
 import play.Application;
 import play.Configuration;
 import play.Play;
+import service.LocationTranslator;
+import service.NLP;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
@@ -34,19 +37,36 @@ public class TweetRepositoryPopulator {
 
             @Override
             public void onStatus(Status status) {
+                long start = System.currentTimeMillis();
+
                 if (tweetsSavedSoFar >= tweetSaveLimit) System.exit(0);
 
-                if (status.getLang().equals("en")) {
+                boolean hasAtLeastOneLocation = status.getGeoLocation() != null || status.getUser().getLocation() != null;
+
+                if (status.getLang().equals("en") && hasAtLeastOneLocation) {
                     Tweet tweet = new Tweet();
                     tweet.setText(status.getText());
-                    tweet.setGeoLocation(status.getGeoLocation());
-                    tweet.setUserLocation(status.getUser().getLocation());
+
+                    // infer GeoLocation if it isn't explicitly set
+                    if (status.getGeoLocation() == null) {
+                        LatLng coordinates = LocationTranslator.addressToCoordinates(status.getUser().getLocation());
+                        tweet.setGeoLocation(new GeoLocation(coordinates.lat, coordinates.lng));
+                        tweet.setUserLocation(status.getUser().getLocation());
+                    } else {
+                        tweet.setGeoLocation(status.getGeoLocation());
+                        tweet.setUserLocation(status.getUser().getLocation());
+                    }
+
+                    // assign a sentiment value
+                    tweet.setSentimentValue(NLP.getSentiment(status.getText()));
 
                     TweetRepository.save(tweet);
                     tweetsSavedSoFar++;
 
                     System.out.println("**      " + tweetsSavedSoFar + " tweets saved       **");
                 }
+                long end = System.currentTimeMillis();
+                System.out.println("TIME: " + (end-start));
             }
 
             @Override
