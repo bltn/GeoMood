@@ -1,23 +1,19 @@
 package repositories;
 
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
 import models.Tweet;
-import org.jongo.MongoCursor;
+import org.jongo.Jongo;
+import org.jongo.MongoCollection;
 
 public class TweetRepository {
 
-    public static MongoCursor<Tweet> findByTopic(String topic) {
-        return null;
+    private static final String DB_NAME = "geomood";
+    private static final DB DATABASE = new MongoClient().getDB(DB_NAME);
+    private static final Jongo jongoClient = new Jongo(DATABASE);
+    private static final MongoCollection tweetCollection = jongoClient.getCollection("tweets");
+
+    public static void save(Tweet tweet) {
+        tweetCollection.save(tweet);
     }
 }
-
-/**
- * DB db = new MongoClient().getDB("dbname");
-
- Jongo jongo = new Jongo(db);
- MongoCollection friends = jongo.getCollection("friends");
-
- MongoCursor<Friend> all = friends.find("{name: 'Joe'}").as(Friend.class);
- Friend one = friends.findOne("{name: 'Joe'}").as(Friend.class);
- MongoCursor<Friend> all = friends.find("{name: 'Joe'}").as(Friend.class);
-
- */

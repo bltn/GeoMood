@@ -1,4 +1,4 @@
-package service;
+package repositories;
 
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
@@ -14,32 +14,38 @@ import twitter4j.conf.ConfigurationBuilder;
 import java.util.List;
 
 /**
- * Populates the given database collection with tweets from the Twitter Streaming API
- *
- *
+ * While running, populates the given database collection with tweets from the Twitter Streaming API
  */
-public class TweetDBPopulator {
+public class TweetRepositoryPopulator {
 
+    /**
+     * @param args 1 argument, as follows:
+     *             tweet limit (how many tweets to save before exiting)
+     */
     public static void main(String[] args) {
+        int tweetSaveLimit = Integer.parseInt(args[0]);
+
         TwitterStreamFactory tf = new TwitterStreamFactory();
         TwitterStream twitterStream = tf.getInstance();
 
-        DB db = new MongoClient().getDB("geomood");
-        Jongo jongoClient = new Jongo(db);
-
-        MongoCollection tweets = jongoClient.getCollection("tweets");
-
         StatusListener listener = new StatusListener() {
+
+            int tweetsSavedSoFar = 0;
 
             @Override
             public void onStatus(Status status) {
+                if (tweetsSavedSoFar >= tweetSaveLimit) System.exit(0);
+
                 if (status.getLang().equals("en")) {
                     Tweet tweet = new Tweet();
                     tweet.setText(status.getText());
                     tweet.setGeoLocation(status.getGeoLocation());
                     tweet.setUserLocation(status.getUser().getLocation());
 
-                    tweets.save(tweet);
+                    TweetRepository.save(tweet);
+                    tweetsSavedSoFar++;
+
+                    System.out.println("**      " + tweetsSavedSoFar + " tweets saved       **");
                 }
             }
 

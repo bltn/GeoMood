@@ -24,7 +24,7 @@ public class TwitterSearch {
     }
 
     public List<Status> getTweets(Query topic) throws TwitterException {
-        topic.setCount(100);
+        topic.setCount(15);
         QueryResult result = twitterAPI.search(topic);
         List<Status> tweets = result.getTweets();
 
