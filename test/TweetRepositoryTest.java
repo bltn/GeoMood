@@ -47,5 +47,9 @@ public class TweetRepositoryTest {
         tweet.setGeoLocation(null);
         tweet.setUserLocation(null);
         assertFalse(TweetRepository.save(tweet));
+        tweet.setUserLocation("");
+        assertFalse(TweetRepository.save(tweet));
+        tweet.setUserLocation("   ");
+        assertFalse(TweetRepository.save(tweet));
     }
 }

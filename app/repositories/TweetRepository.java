@@ -14,12 +14,18 @@ public class TweetRepository {
     private static final MongoCollection tweetCollection = jongoClient.getCollection("tweets");
 
     public static boolean save(Tweet tweet) {
-        if (tweet.getGeoLocation() != null || tweet.getUserLocation() != null) {
-            tweetCollection.save(tweet);
-            return true;
-        } else {
-            return false;
+        boolean shouldBeSaved = false;
+
+        // save if it has a geolocation
+        if (tweet.getGeoLocation() != null) shouldBeSaved = true;
+
+        // save if it has a non-empty user profile location
+        if (tweet.getUserLocation() != null) {
+            if (!tweet.getUserLocation().trim().isEmpty()) shouldBeSaved = true;
         }
+
+        if (shouldBeSaved) tweetCollection.save(tweet);
+        return shouldBeSaved;
     }
 
     public static void remove(Tweet tweet) {
