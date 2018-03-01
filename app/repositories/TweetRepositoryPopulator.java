@@ -37,8 +37,6 @@ public class TweetRepositoryPopulator {
 
             @Override
             public void onStatus(Status status) {
-                long start = System.currentTimeMillis();
-
                 if (tweetsSavedSoFar >= tweetSaveLimit) System.exit(0);
 
                 boolean hasAtLeastOneLocation = status.getGeoLocation() != null || status.getUser().getLocation() != null;
@@ -65,8 +63,6 @@ public class TweetRepositoryPopulator {
 
                     System.out.println("**      " + tweetsSavedSoFar + " tweets saved       **");
                 }
-                long end = System.currentTimeMillis();
-                System.out.println("TIME: " + (end-start));
             }
 
             @Override

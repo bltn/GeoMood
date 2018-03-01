@@ -1,19 +1,7 @@
-@(sentimentMap: Map[String, Integer])
+@(tweets: List[Tweet])
+
 @main("tweet listing") {
-    <ul id="tweet-list">
-    @for((tweet, sentiment) <- sentimentMap) {
-        @if(sentiment <= 1) {
-            <li class="negative-sentiment">@tweet (@sentiment)</li>
-        }
-        @if(sentiment == 2) {
-            <li class="neutral-sentiment">@tweet (@sentiment)</li>
-        }
-        @if(sentiment > 2) {
-            <li class="positive-sentiment">@tweet (@sentiment)</li>
-        }
-        @if(sentiment < 0) {
-            <li class="unclassified-sentiment">@tweet (@sentiment)</li>
-        }
+    @for(tweet <- tweets) {
+        <li>@tweet.getText</li>
     }
-    </ul>
 }

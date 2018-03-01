@@ -5,6 +5,8 @@ import com.mongodb.MongoClient;
 import models.Tweet;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
+import org.jongo.MongoCursor;
+import repositories.TweetRepository;
 import service.TwitterSearch;
 import play.*;
 import play.mvc.*;
@@ -19,7 +21,7 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.Map;
 
-public class TweetSearchController extends Controller {
+public class TweetController extends Controller {
 
     @Inject
     Configuration conf;
@@ -31,17 +33,16 @@ public class TweetSearchController extends Controller {
     public Result search() {
         // Fetch the topic name
         String topic = request().getQueryString("topic");
-        try {
-            TwitterSearch tweetSearch = new TwitterSearch(conf);
-            // Fetch tweets from the API
-            List<Status> tweets = tweetSearch.getTweets(new Query(topic));
-            // Assign each tweet a sentiment value
-            Map<String, Integer> sentimentMap = NLP.getSentimentMapping(tweets);
-            // Render sentiment-rated tweet listing
-            return ok(show_tweets.render(sentimentMap));
-        } catch (TwitterException e) {
-            // Render internal server error page showing error msg
-            return internalServerError(e.getMessage());
-        }
+
+        /**TwitterSearch tweetSearch = new TwitterSearch(conf);
+        // Fetch tweets from the database
+        List<Status> tweets = tweetSearch.getTweets(new Query(topic));
+        // Assign each tweet a sentiment value
+        Map<String, Integer> sentimentMap = NLP.getSentimentMapping(tweets);
+        // Render sentiment-rated tweet listing
+        return ok(show_tweets.render(sentimentMap));**/
+
+        List<Tweet> tweetsWithTopic = TweetRepository.findTweetsWithTopic(topic);
+        return ok(show_tweets.render(tweetsWithTopic));
     }
 }
