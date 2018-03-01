@@ -3,6 +3,7 @@ package repositories;
 import com.google.maps.model.LatLng;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
+import com.typesafe.config.ConfigFactory;
 import models.Tweet;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
@@ -31,6 +32,8 @@ public class TweetRepositoryPopulator {
         TwitterStreamFactory tf = new TwitterStreamFactory();
         TwitterStream twitterStream = tf.getInstance();
 
+        TweetRepository tweetRepo = TweetRepositoryFactory.getTweetRepository("dev");
+
         StatusListener listener = new StatusListener() {
 
             int tweetsSavedSoFar = 0;
@@ -58,7 +61,7 @@ public class TweetRepositoryPopulator {
                     // assign a sentiment value
                     tweet.setSentimentValue(NLP.getSentiment(status.getText()));
 
-                    TweetRepository.save(tweet);
+                    tweetRepo.save(tweet);
                     tweetsSavedSoFar++;
 
                     System.out.println("**      " + tweetsSavedSoFar + " tweets saved       **");

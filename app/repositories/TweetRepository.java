@@ -2,6 +2,7 @@ package repositories;
 
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
+import com.typesafe.config.ConfigFactory;
 import models.Tweet;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
@@ -13,12 +14,19 @@ import java.util.regex.Pattern;
 
 public class TweetRepository {
 
-    private static final String DB_NAME = "geomood";
-    private static final DB DATABASE = new MongoClient().getDB(DB_NAME);
-    private static final Jongo jongoClient = new Jongo(DATABASE);
-    private static final MongoCollection tweetCollection = jongoClient.getCollection("tweets");
+    private MongoCollection tweetCollection;
 
-    public static boolean save(Tweet tweet) {
+    public TweetRepository(String databaseName, String collectionName) {
+        tweetCollection = loadMongoCollection(databaseName, collectionName);
+    }
+
+    private MongoCollection loadMongoCollection(String databaseName, String collectionName) {
+        DB database = new MongoClient().getDB(databaseName);
+        Jongo jongoClient = new Jongo(database);
+        return jongoClient.getCollection(collectionName);
+    }
+
+    public boolean save(Tweet tweet) {
         boolean shouldBeSaved = false;
 
         // save if it has a geolocation
@@ -33,16 +41,16 @@ public class TweetRepository {
         return shouldBeSaved;
     }
 
-    public static List<Tweet> findTweetsWithTopic(String topic) {
+    public List<Tweet> findTweetsWithTopic(String topic) {
         MongoCursor<Tweet> tweetsContainingTopic = tweetCollection.find("{text:#}", Pattern.compile(".*"+topic+".*")).as(Tweet.class);
         return convertMongoCursorToList(tweetsContainingTopic);
     }
 
-    public static void remove(Tweet tweet) {
+    public void remove(Tweet tweet) {
         tweetCollection.remove(tweet.getId());
     }
 
-    private static List<Tweet> convertMongoCursorToList(MongoCursor<Tweet> mongoCursorTweets) {
+    private List<Tweet> convertMongoCursorToList(MongoCursor<Tweet> mongoCursorTweets) {
         List<Tweet> tweets = new ArrayList<Tweet>();
 
         while (mongoCursorTweets.hasNext()) {

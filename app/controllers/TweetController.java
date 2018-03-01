@@ -7,6 +7,7 @@ import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
 import repositories.TweetRepository;
+import repositories.TweetRepositoryFactory;
 import service.TwitterSearch;
 import play.*;
 import play.mvc.*;
@@ -42,7 +43,8 @@ public class TweetController extends Controller {
         // Render sentiment-rated tweet listing
         return ok(show_tweets.render(sentimentMap));**/
 
-        List<Tweet> tweetsWithTopic = TweetRepository.findTweetsWithTopic(topic);
+        TweetRepository tweetRepo = TweetRepositoryFactory.getTweetRepository("dev");
+        List<Tweet> tweetsWithTopic = tweetRepo.findTweetsWithTopic(topic);
         return ok(show_tweets.render(tweetsWithTopic));
     }
 }
