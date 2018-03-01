@@ -3,6 +3,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import repositories.TweetRepository;
+import repositories.TweetRepositoryFactory;
 import twitter4j.GeoLocation;
 
 import java.util.List;
@@ -13,9 +14,12 @@ public class TweetRepositoryTest {
 
     private Tweet brexitTweet;
     private Tweet collegeTweet;
+    private TweetRepository tweetRepo;
 
     @Before
     public void setUp() {
+        tweetRepo = TweetRepositoryFactory.getTweetRepository("test");
+
         brexitTweet = new Tweet();
         brexitTweet.setText("brexit was a very bad idea");
         brexitTweet.setUserLocation("Manchester, UK");
@@ -23,49 +27,65 @@ public class TweetRepositoryTest {
 
         collegeTweet = new Tweet();
         collegeTweet.setText("this tweet talks about college ok");
-        collegeTweet = new Tweet();
-        collegeTweet.setText("this tweet talks about college");
+        collegeTweet.setUserLocation("Manchester, UK");
+        collegeTweet.setGeoLocation(new GeoLocation(53.4808, 2.2426));
     }
 
     @After
     public void tearDown() {
-        TweetRepository.remove(brexitTweet);
+        tweetRepo.remove(brexitTweet);
+        tweetRepo.remove(collegeTweet);
     }
 
     @Test
     public void saveValidTweet() {
-        assert(TweetRepository.save(brexitTweet));
+        assert(tweetRepo.save(brexitTweet));
     }
 
     @Test
     public void saveWithNoGeoLocation() {
         brexitTweet.setGeoLocation(null);
-        assert(TweetRepository.save(brexitTweet));
+        assert(tweetRepo.save(brexitTweet));
     }
 
     @Test
     public void saveWithNoUserLocation() {
         brexitTweet.setUserLocation(null);
-        assert(TweetRepository.save(brexitTweet));
+        assert(tweetRepo.save(brexitTweet));
     }
 
     @Test
     public void saveWithNoUserLocationOrGeoLocation() {
         brexitTweet.setGeoLocation(null);
         brexitTweet.setUserLocation(null);
-        assertFalse(TweetRepository.save(brexitTweet));
+        assertFalse(tweetRepo.save(brexitTweet));
         brexitTweet.setUserLocation("");
-        assertFalse(TweetRepository.save(brexitTweet));
+        assertFalse(tweetRepo.save(brexitTweet));
         brexitTweet.setUserLocation("   ");
-        assertFalse(TweetRepository.save(brexitTweet));
+        assertFalse(tweetRepo.save(brexitTweet));
     }
 
     @Test
-    public void findTweetWithExistingTopic() {
-        TweetRepository.save(collegeTweet);
-        TweetRepository.save(brexitTweet);
+    public void findTweetWithExistentTopic() {
+        tweetRepo.save(collegeTweet);
+        tweetRepo.save(brexitTweet);
 
-        List<Tweet> matchingTweets = TweetRepository.findTweetsWithTopic(collegeTweet.getText());
+        List<Tweet> matchingTweets = tweetRepo.findTweetsWithTopic("college");
+        System.out.println(matchingTweets.size());
         assert(matchingTweets.size() == 1);
+        assert(matchingTweets.get(0).getText().equals(collegeTweet.getText()));
+
+        matchingTweets = tweetRepo.findTweetsWithTopic("brexit");
+        assert(matchingTweets.size() == 1);
+        assert(matchingTweets.get(0).getText().equals(brexitTweet.getText()));
+    }
+
+    @Test
+    public void findTweetWithNonExistentTopic() {
+        tweetRepo.save(collegeTweet);
+        tweetRepo.save(brexitTweet);
+
+        List<Tweet> matchingTweets = tweetRepo.findTweetsWithTopic("i dont exist lalalalaalalala");
+        assert(matchingTweets.size() == 0);
     }
 }
