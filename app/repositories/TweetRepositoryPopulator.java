@@ -1,21 +1,10 @@
 package repositories;
 
 import com.google.maps.model.LatLng;
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
-import com.typesafe.config.ConfigFactory;
 import models.Tweet;
-import org.jongo.Jongo;
-import org.jongo.MongoCollection;
-import play.Application;
-import play.Configuration;
-import play.Play;
 import service.LocationTranslator;
 import service.NLP;
 import twitter4j.*;
-import twitter4j.conf.ConfigurationBuilder;
-
-import java.util.List;
 
 /**
  * While running, populates the given database collection with tweets from the Twitter Streaming API

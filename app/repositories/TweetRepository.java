@@ -42,12 +42,16 @@ public class TweetRepository {
     }
 
     public List<Tweet> findTweetsWithTopic(String topic) {
-        MongoCursor<Tweet> tweetsContainingTopic = tweetCollection.find("{text:#}", Pattern.compile(".*"+topic+".*")).as(Tweet.class);
-        return convertMongoCursorToList(tweetsContainingTopic);
+        return fetchByTopic(topic);
     }
 
     public void remove(Tweet tweet) {
         tweetCollection.remove(tweet.getId());
+    }
+
+    private List<Tweet> fetchByTopic(String topic) {
+        MongoCursor<Tweet> matchingTweets = tweetCollection.find("{text:#}", Pattern.compile(".*"+topic+".*")).as(Tweet.class);
+        return convertMongoCursorToList(matchingTweets);
     }
 
     private List<Tweet> convertMongoCursorToList(MongoCursor<Tweet> mongoCursorTweets) {
