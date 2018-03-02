@@ -4,11 +4,12 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
+import com.typesafe.config.ConfigFactory;
 import twitter4j.GeoLocation;
 
 public class LocationTranslator {
 
-    private static final String GOOGLE_API_KEY = "AIzaSyDQqrCiWvZICOrl2tc1gvktZ5UTKG0jA2w";
+    private static final String GOOGLE_API_KEY = ConfigFactory.load().getString("GOOGLE_MAPS_API_KEY");
     private static final GeoApiContext apiContext = buildGoogleAPIContext();
 
     public static void main(String[] args) {
