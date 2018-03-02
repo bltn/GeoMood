@@ -9,3 +9,4 @@ GET     /                           controllers.TweetController.renderSearchForm
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 GET     /TweetSearch/search         controllers.TweetController.search
+GET     /Map/visualise              controllers.MapController.renderMapVisualisation

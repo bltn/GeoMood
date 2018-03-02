@@ -2,6 +2,15 @@ html {
     font-family: sans-serif;
 }
 
+div#map {
+    background-color: grey;
+    height: 80%;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    position: absolute;
+}
+
 ul#nav {
     list-style-type: none;
     margin: 0 0 20px 0;
