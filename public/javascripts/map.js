@@ -3,7 +3,8 @@ function initMap() {
     var birmingham = {lat: 52.4862, lng: 1.8904};
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 4,
-        center: birmingham
+        center: birmingham,
+        mapTypeId: 'roadmap'
     });
 
     // fetch icons to represent negative, neutral and positive sentiment
