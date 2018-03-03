@@ -1,6 +1,6 @@
 @(tweets: List[Tweet])
 
-@main("tweet listing") {
+@main {
     @for(tweet <- tweets) {
         <span class="tweet" data-lat="@tweet.getGeoLocation().getLatitude"
         data-lng="@tweet.getGeoLocation().getLongitude" data-sentiment="@tweet.getSentimentValue"></span>

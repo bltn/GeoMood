@@ -1,6 +1,6 @@
 @(tweets: List[Tweet])
 
-@main("tweet listing") {
+@main {
     @for(tweet <- tweets) {
         <li>@tweet.getText</li>
     }

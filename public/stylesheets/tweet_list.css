@@ -1,0 +1,42 @@
+
+ul#tweet-list {
+    padding: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+ul#tweet-list li.positive-sentiment {
+    color: green;
+    list-style: none;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: lightgrey;
+    border-radius: 5px;
+}
+
+ul#tweet-list li.neutral-sentiment {
+    color: blue;
+    list-style: none;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: lightgrey;
+    border-radius: 5px;
+}
+
+ul#tweet-list li.negative-sentiment {
+    color: red;
+    list-style: none;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: lightgrey;
+    border-radius: 5px;
+}
+
+ul#tweet-list li.unclassified-sentiment {
+    color: grey;
+    list-style: none;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: lightgrey;
+    border-radius: 5px;
+}

@@ -2,15 +2,6 @@ html {
     font-family: sans-serif;
 }
 
-div#map {
-    background-color: grey;
-    height: 80%;
-    width: 80%;
-    margin-left: 10%;
-    margin-right: 10%;
-    position: absolute;
-}
-
 ul#nav {
     list-style-type: none;
     margin: 0 0 20px 0;
@@ -38,78 +29,4 @@ ul#nav li.nav-link {
 
 ul#nav li.nav-link a {
     color: white;
-}
-
-
-form#tweet-search {
-    width: 80%;
-    margin: 0 10%;
-}
-
-form#tweet-search label {
-    margin-bottom: 10px;
-}
-
-form#tweet-search input[type="text"] {
-    width: 75%;
-    margin-right: 5%;
-    height: 30px;
-    border-radius: 4px;
-    border: 1px solid lightgrey;
-    font-size: 18px;
-}
-
-form#tweet-search input[type="submit"] {
-    width: 15%;
-    border-radius: 5px;
-    height: 30px;
-    color: white;
-    background-color: blue;
-    font-weight: bold;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-
-
-ul#tweet-list {
-    padding: 0;
-    margin-left: 20px;
-    margin-right: 20px;
-}
-
-ul#tweet-list li.positive-sentiment {
-    color: green;
-    list-style: none;
-    margin: 10px 0;
-    padding: 10px;
-    background-color: lightgrey;
-    border-radius: 5px;
-}
-
-ul#tweet-list li.neutral-sentiment {
-    color: blue;
-    list-style: none;
-    margin: 10px 0;
-    padding: 10px;
-    background-color: lightgrey;
-    border-radius: 5px;
-}
-
-ul#tweet-list li.negative-sentiment {
-    color: red;
-    list-style: none;
-    margin: 10px 0;
-    padding: 10px;
-    background-color: lightgrey;
-    border-radius: 5px;
-}
-
-ul#tweet-list li.unclassified-sentiment {
-    color: grey;
-    list-style: none;
-    margin: 10px 0;
-    padding: 10px;
-    background-color: lightgrey;
-    border-radius: 5px;
 }

@@ -1,0 +1,29 @@
+form#tweet-search {
+    width: 80%;
+    margin: 0 10%;
+}
+
+form#tweet-search label {
+    margin-bottom: 10px;
+}
+
+form#tweet-search input[type="text"] {
+    width: 75%;
+    margin-right: 5%;
+    height: 30px;
+    border-radius: 4px;
+    border: 1px solid lightgrey;
+    font-size: 18px;
+}
+
+form#tweet-search input[type="submit"] {
+    width: 15%;
+    border-radius: 5px;
+    height: 30px;
+    color: white;
+    background-color: blue;
+    font-weight: bold;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
