@@ -2,14 +2,21 @@ html {
     font-family: sans-serif;
 }
 
+body {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
 ul#nav {
     list-style-type: none;
-    margin: 0 0 20px 0;
+    margin: 0;
     padding: 0;
     width: 100%;
-    background-color: blue;
+    background-color: navy;
     height: 50px;
-    overflow: auto;
+    overflow: hidden;
 }
 
 ul#nav li {
@@ -23,10 +30,10 @@ ul#nav li#nav-title {
     float: left;
 }
 
-ul#nav li.nav-link {
-    float: right;
-}
-
-ul#nav li.nav-link a {
+ul#nav li#nav-title a {
     color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: serif;
 }

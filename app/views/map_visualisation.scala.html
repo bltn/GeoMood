@@ -1,9 +1,17 @@
 @(tweets: List[Tweet])
 
-@main {
+@scripts = {
+    <script src="@routes.Assets.at("javascripts/map.js")" type="text/javascript"></script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDN5oYZL5dP2djoGvYLJRTMfVgDNgw93Ew&callback=initMap">
+    </script>
+}
+
+@main(scripts) {
     @for(tweet <- tweets) {
         <span class="tweet" data-lat="@tweet.getGeoLocation().getLatitude"
         data-lng="@tweet.getGeoLocation().getLongitude" data-sentiment="@tweet.getSentimentValue"></span>
     }
     <div id="map"></div>
 }
+

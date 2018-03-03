@@ -6,15 +6,10 @@ import play.mvc.Result;
 import repositories.TweetRepository;
 import repositories.TweetRepositoryFactory;
 import views.html.show_tweets;
-import views.html.tweet_search;
 
 import java.util.List;
 
 public class TweetController extends Controller {
-
-    public Result renderSearchForm() {
-        return ok(tweet_search.render());
-    }
 
     public Result search() {
         // Fetch the topic name
