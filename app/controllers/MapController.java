@@ -14,7 +14,7 @@ public class MapController extends Controller {
     public Result visualiseTopic() {
         String topic = request().getQueryString("topic");
         TweetRepository repo = TweetRepositoryFactory.getTweetRepository("dev");
-        List<Tweet> sampleTweets = repo.findTweetsWithTopic(topic);
-        return ok(map_visualisation.render(sampleTweets));
+        List<Tweet> tweets = repo.findTweetsWithTopic(topic);
+        return ok(map_visualisation.render(tweets, topic));
     }
 }

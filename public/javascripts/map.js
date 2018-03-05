@@ -24,18 +24,54 @@ function hideNewTopicSearchForm() {
 function initMap() {
     // Retrieve tweet data from html -data attributes
     var tweets = document.getElementsByClassName("tweet");
-    // Start the map focused on the first tweet
-    var firstTweetLocation;
-    firstTweetLocation = {lat: Number(tweets[0].dataset.lat), lng: Number(tweets[0].dataset.lng)}
-    // construct the Google map
-    var map = constructGoogleMap('map', firstTweetLocation);
 
-    // fetch icons to represent negative, neutral and positive sentiment
-    var negative_icon = "https://maps.gstatic.com/mapfiles/ms2/micons/red-dot.png";
-    var neutral_icon = "https://maps.gstatic.com/mapfiles/ms2/micons/blue-dot.png";
-    var positive_icon = "https://maps.gstatic.com/mapfiles/ms2/micons/green-dot.png";
+    var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
 
-    addTweetMarkersToMap(tweets, map);
+    var icons = {
+        parking: {
+            name: 'Parking',
+            icon: iconBase + 'parking_lot_maps.png'
+        },
+        library: {
+            name: 'Library',
+            icon: iconBase + 'library_maps.png'
+        },
+        info: {
+            name: 'Info',
+            icon: iconBase + 'info-i_maps.png'
+        }
+    }
+
+    if (tweets.length > 0) {
+        // Start the map focused on the first tweet
+        var firstTweetLocation;
+        firstTweetLocation = {lat: Number(tweets[0].dataset.lat), lng: Number(tweets[0].dataset.lng)}
+        // construct the Google map
+        var map = constructGoogleMap('map', firstTweetLocation);
+
+        // fetch icons to represent negative, neutral and positive sentiment
+        var negative_icon = "https://maps.gstatic.com/mapfiles/ms2/micons/red-dot.png";
+        var neutral_icon = "https://maps.gstatic.com/mapfiles/ms2/micons/blue-dot.png";
+        var positive_icon = "https://maps.gstatic.com/mapfiles/ms2/micons/green-dot.png";
+
+        addTweetMarkersToMap(tweets, map);
+    }
+
+    var legend = document.getElementById('legend');
+
+    var positiveIconDiv = document.createElement('div');
+    positiveIconDiv.innerHTML = '<img src="' + positive_icon + '"> ' + "Positive sentiment";
+    legend.appendChild(positiveIconDiv);
+
+    var neutralIconDiv = document.createElement('div');
+    neutralIconDiv.innerHTML = '<img src="' + neutral_icon + '"> ' + "Neutral sentiment";
+    legend.appendChild(neutralIconDiv);
+
+    var negativeIconDiv = document.createElement('div');
+    negativeIconDiv.innerHTML = '<img src="' + negative_icon + '"> ' + "Negative sentiment";
+    legend.appendChild(negativeIconDiv);
+
+    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 }
 
 function constructGoogleMap(htmlContainerId, firstTweetLocation) {

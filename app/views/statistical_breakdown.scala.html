@@ -1,0 +1,16 @@
+@(tweets: List[Tweet])
+
+<html>
+    <head>
+
+    </head>
+
+    <body>
+
+        @for(tweet <- tweets) {
+            <span class="tweet" data-sentiment="@tweet.getSentimentValue"></span>
+        }
+            <!--Div that will hold the pie chart-->
+        <div id="chart_div"></div>
+    </body>
+</html>

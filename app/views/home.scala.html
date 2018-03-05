@@ -2,7 +2,7 @@
     <div id="home-page-background-block">
         <p id="intro">See how (and from where) people feel about a topic -- based on what they're tweeting.
             Enter a topic below to get started.</p>
-        <form action="/Map/visualiseTopic" method="GET" id="home-page-tweet-search">
+        <form action="@routes.MapController.visualiseTopic()" method="GET" id="home-page-tweet-search">
             <input type="text" name="topic" placeholder="Enter your topic here"/>
             <input type="submit" value="Go">
         </form>
