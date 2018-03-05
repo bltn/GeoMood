@@ -72,7 +72,8 @@ function addTweetMarkersToMap(tweets, map) {
         new google.maps.Marker({
             position: {lat: tweetLatitude, lng: tweetLongitude},
             map: map,
-            icon: tweetIcon
+            icon: tweetIcon,
+            title: tweets[i].dataset.text
         });
     }
 }
