@@ -12,6 +12,18 @@
         <span class="tweet" data-lat="@tweet.getGeoLocation().getLatitude"
         data-lng="@tweet.getGeoLocation().getLongitude" data-sentiment="@tweet.getSentimentValue"></span>
     }
+    <ul id="map-toolbar">
+        <li><a href="" id="new-topic-link" onclick="return renderNewTopicSearch()">Search for a new topic</a></li>
+
+        <form id="map-new-topic-search" method="GET" action="/Map/visualiseTopic">
+            <span onclick="return cancelNewTopicSearch()">x</span>
+            <input type="text" name="topic"/>
+            <input type="submit" />
+        </form>
+
+        <li><a href="">Statistical breakdown</a></li>
+    </ul>
+
     <div id="map"></div>
 }
 

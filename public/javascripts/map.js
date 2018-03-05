@@ -1,3 +1,23 @@
+function renderNewTopicSearch() {
+    var topicSearchForm = document.getElementById("map-new-topic-search");
+    var newTopicLink = document.getElementById("new-topic-link");
+
+    topicSearchForm.style.display = "inline-block";
+    newTopicLink.style.display = "none";
+    return false;
+}
+
+function cancelNewTopicSearch() {
+    var topicSearchForm = document.getElementById("map-new-topic-search");
+    var newTopicLink = document.getElementById("new-topic-link");
+
+    topicSearchForm.reset();
+
+    topicSearchForm.style.display = "none";
+    newTopicLink.style.display = "inline-block";
+    return false;
+}
+
 function initMap() {
     // Start the map focused on Birmingham
     var birmingham = {lat: 52.4862, lng: 1.8904};

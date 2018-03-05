@@ -1,3 +1,47 @@
+ul#map-toolbar {
+    list-style-type: none;
+    margin: 0 9%;
+    padding: 0;
+    width: 82%;
+    height: 30px;
+    overflow: hidden;
+}
+
+ul#map-toolbar li {
+    display: inline;
+    line-height: 30px;
+    padding: 0;
+    color: black;
+    font-size: 14px;
+    font-family: serif;
+}
+
+ul#map-toolbar li a {
+    display: inline-block;
+    padding: 0 10px;
+}
+
+ul#map-toolbar li a:hover {
+    color: blue;
+    background-color: yellow;
+}
+
+ul#map-toolbar form#map-new-topic-search {
+    display: none;
+    margin: 0;
+}
+
+ul#map-toolbar form#map-new-topic-search span {
+    color: red;
+    font-weight: lighter;
+}
+
+ul#map-toolbar form#map-new-topic-search span:hover {
+    color: white;
+    background-color: red;
+    cursor: pointer;
+}
+
 div#map {
     background-color: grey;
     height: 80%;
