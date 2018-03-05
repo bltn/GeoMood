@@ -13,10 +13,10 @@
         data-lng="@tweet.getGeoLocation().getLongitude" data-sentiment="@tweet.getSentimentValue"></span>
     }
     <ul id="map-toolbar">
-        <li><a href="" id="new-topic-link" onclick="return renderNewTopicSearch()">Search for a new topic</a></li>
+        <li><a href="" id="new-topic-link" onclick="return renderNewTopicSearchForm()">Search for a new topic</a></li>
 
         <form id="map-new-topic-search" method="GET" action="/Map/visualiseTopic">
-            <span onclick="return cancelNewTopicSearch()">x</span>
+            <span onclick="return hideNewTopicSearchForm()">x</span>
             <input type="text" name="topic"/>
             <input type="submit" />
         </form>

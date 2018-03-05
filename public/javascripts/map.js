@@ -1,4 +1,4 @@
-function renderNewTopicSearch() {
+function renderNewTopicSearchForm() {
     var topicSearchForm = document.getElementById("map-new-topic-search");
     var newTopicLink = document.getElementById("new-topic-link");
 
@@ -7,7 +7,7 @@ function renderNewTopicSearch() {
     return false;
 }
 
-function cancelNewTopicSearch() {
+function hideNewTopicSearchForm() {
     var topicSearchForm = document.getElementById("map-new-topic-search");
     var newTopicLink = document.getElementById("new-topic-link");
 
@@ -18,23 +18,42 @@ function cancelNewTopicSearch() {
     return false;
 }
 
+/**
+ * Function called as a callback by the Google Maps Javascript API
+ */
 function initMap() {
-    // Start the map focused on Birmingham
-    var birmingham = {lat: 52.4862, lng: 1.8904};
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 4,
-        center: birmingham,
-        mapTypeId: 'roadmap'
-    });
+    // Retrieve tweet data from html -data attributes
+    var tweets = document.getElementsByClassName("tweet");
+    // Start the map focused on the first tweet
+    var firstTweetLocation;
+    firstTweetLocation = {lat: Number(tweets[0].dataset.lat), lng: Number(tweets[0].dataset.lng)}
+    // construct the Google map
+    var map = constructGoogleMap('map', firstTweetLocation);
 
     // fetch icons to represent negative, neutral and positive sentiment
     var negative_icon = "https://maps.gstatic.com/mapfiles/ms2/micons/red-dot.png";
     var neutral_icon = "https://maps.gstatic.com/mapfiles/ms2/micons/blue-dot.png";
     var positive_icon = "https://maps.gstatic.com/mapfiles/ms2/micons/green-dot.png";
 
-    var tweets = document.getElementsByClassName("tweet");
+    addTweetMarkersToMap(tweets, map);
+}
 
-    // loop over all tweet coordinates and overlay them onto the map
+function constructGoogleMap(htmlContainerId, firstTweetLocation) {
+    var map = new google.maps.Map(document.getElementById(htmlContainerId), {
+        zoom: 4,
+        center: firstTweetLocation,
+        mapTypeId: 'roadmap'
+    });
+    return map;
+}
+
+function addTweetMarkersToMap(tweets, map) {
+    // fetch icons to represent negative, neutral and positive sentiment
+    var negative_icon = "https://maps.gstatic.com/mapfiles/ms2/micons/red-dot.png";
+    var neutral_icon = "https://maps.gstatic.com/mapfiles/ms2/micons/blue-dot.png";
+    var positive_icon = "https://maps.gstatic.com/mapfiles/ms2/micons/green-dot.png";
+
+    // overlay each tweet onto its coordinates on the map, with icons color-coded by sentiment
     for(var i=0; i < tweets.length; i++) {
         var tweetLatitude = Number(tweets[i].dataset.lat);
         var tweetLongitude = Number(tweets[i].dataset.lng);
