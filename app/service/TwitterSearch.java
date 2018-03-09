@@ -1,37 +1,28 @@
 package service;
 
-import play.Configuration;
 import twitter4j.*;
-import twitter4j.conf.ConfigurationBuilder;
 
-import javax.inject.Inject;
 import java.util.List;
 
 public class TwitterSearch {
 
     private Twitter twitterAPI;
 
-    public TwitterSearch(Configuration conf) {
-        ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true)
-                .setOAuthConsumerKey(conf.getString("CONSUMER_KEY"))
-                .setOAuthConsumerSecret(conf.getString("CONSUMER_SECRET"))
-                .setOAuthAccessToken(conf.getString("ACCESS_TOKEN"))
-                .setOAuthAccessTokenSecret(conf.getString("ACCESS_SECRET"));
-
-        TwitterFactory tf = new TwitterFactory(cb.build());
+    public TwitterSearch() {
+        TwitterFactory tf = new TwitterFactory();
         twitterAPI = tf.getInstance();
     }
 
-    public List<Status> getTweets(Query topic) throws TwitterException {
-        topic.setCount(15);
-        QueryResult result = twitterAPI.search(topic);
-        List<Status> tweets = result.getTweets();
+    public List<Status> getTweets(Query query) throws TwitterException {
+        // The API's rate limit is 180 calls every 15 minutes
+        int rateLimitRemaining = twitterAPI.getRateLimitStatus().get("/search/tweets").getRemaining();
+        // Throw exception if the rate limit has been hit
+        if (rateLimitRemaining == 0) throw new TwitterException("Twitter's REST API rate limit (180 calls per 15 minutes) exceeded.");
 
-        for (int i = 0; i < 10; i++)
-            result = twitterAPI.search(topic);
-            tweets.addAll(result.getTweets());
+        // Return 100 tweets per result page
+        query.setCount(100);
 
-        return tweets;
+        QueryResult result = twitterAPI.search(query);
+        return result.getTweets();
     }
 }

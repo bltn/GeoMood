@@ -6,10 +6,16 @@ import service.LocationTranslator;
 import service.NLP;
 import twitter4j.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 /**
  * While running, populates the given database collection with tweets from the Twitter Streaming API
  */
 public class TweetRepositoryPopulator {
+
+    private static List<Status> tweets = new ArrayList<Status>();
 
     /**
      * @param args 1 argument, as follows:
@@ -29,6 +35,7 @@ public class TweetRepositoryPopulator {
 
             @Override
             public void onStatus(Status status) {
+                tweets.add(status);
                 if (tweetsSavedSoFar >= tweetSaveLimit) System.exit(0);
 
                 boolean hasAtLeastOneLocation = status.getGeoLocation() != null || status.getUser().getLocation() != null;
