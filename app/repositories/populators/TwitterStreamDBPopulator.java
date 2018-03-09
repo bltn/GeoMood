@@ -1,7 +1,9 @@
-package repositories;
+package repositories.populators;
 
 import com.google.maps.model.LatLng;
 import models.Tweet;
+import repositories.TweetRepository;
+import repositories.TweetRepositoryFactory;
 import service.LocationTranslator;
 import service.NLP;
 import twitter4j.*;
