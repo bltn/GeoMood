@@ -10,7 +10,7 @@ import java.util.List;
 
 import static models.TweetFactory.createFromStatusIfHasLocation;
 
-public class TweetSearchPopulator {
+public class TwitterSearchDBPopulator {
 
     private static TweetRepository repo;
     private static Twitter searchAPI;

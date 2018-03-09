@@ -12,10 +12,6 @@ public class LocationTranslator {
     private static final String GOOGLE_API_KEY = ConfigFactory.load().getString("GOOGLE_MAPS_API_KEY");
     private static final GeoApiContext apiContext = buildGoogleAPIContext();
 
-    public static void main(String[] args) {
-        addressToCoordinates("diafoijff");
-    }
-
     public static LatLng addressToCoordinates(String location) {
         LatLng coordinates = getCoordinatesFromAPI(location);
         return coordinates;
@@ -29,7 +25,7 @@ public class LocationTranslator {
             if (results.length == 0) return null;
             return results[0].geometry.location;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }

@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * While running, populates the given database collection with tweets from the Twitter Streaming API
  */
-public class TweetRepositoryPopulator {
+public class TwitterStreamDBPopulator {
 
     private static List<Status> tweets = new ArrayList<Status>();
 
