@@ -3,6 +3,7 @@ package controllers;
 import models.Tweet;
 import play.mvc.Controller;
 import play.mvc.Result;
+import repositories.DBEnvironment;
 import repositories.TweetRepository;
 import repositories.TweetRepositoryFactory;
 import views.html.show_tweets;
@@ -14,7 +15,7 @@ public class TweetController extends Controller {
     public Result search() {
         // Fetch the topic name
         String topic = request().getQueryString("topic");
-        TweetRepository tweetRepo = TweetRepositoryFactory.getTweetRepository("dev");
+        TweetRepository tweetRepo = TweetRepositoryFactory.getTweetRepository(DBEnvironment.DEV);
         List<Tweet> tweetsWithTopic = tweetRepo.findTweetsWithTopic(topic);
         return ok(show_tweets.render(tweetsWithTopic));
     }

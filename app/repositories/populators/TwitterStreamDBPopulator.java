@@ -2,6 +2,7 @@ package repositories.populators;
 
 import com.google.maps.model.LatLng;
 import models.Tweet;
+import repositories.DBEnvironment;
 import repositories.TweetRepository;
 import repositories.TweetRepositoryFactory;
 import service.LocationTranslator;
@@ -29,7 +30,7 @@ public class TwitterStreamDBPopulator {
         TwitterStreamFactory tf = new TwitterStreamFactory();
         TwitterStream twitterStream = tf.getInstance();
 
-        TweetRepository tweetRepo = TweetRepositoryFactory.getTweetRepository("dev");
+        TweetRepository tweetRepo = TweetRepositoryFactory.getTweetRepository(DBEnvironment.DEV);
 
         StatusListener listener = new StatusListener() {
 

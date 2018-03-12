@@ -1,6 +1,7 @@
 package repositories.populators;
 
 import models.Tweet;
+import repositories.DBEnvironment;
 import repositories.TweetRepository;
 import repositories.TweetRepositoryFactory;
 import twitter4j.*;
@@ -18,7 +19,7 @@ public class TwitterSearchDBPopulator {
     private static void initStaticFields() {
         TwitterFactory tf = new TwitterFactory();
         searchAPI = tf.getInstance();
-        repo = TweetRepositoryFactory.getTweetRepository("dev");
+        repo = TweetRepositoryFactory.getTweetRepository(DBEnvironment.DEV);
     }
 
     public static void main(String[] args) {

@@ -2,6 +2,7 @@ import models.Tweet;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import repositories.DBEnvironment;
 import repositories.TweetRepository;
 import repositories.TweetRepositoryFactory;
 import twitter4j.GeoLocation;
@@ -18,7 +19,7 @@ public class TweetRepositoryTest {
 
     @Before
     public void setUp() {
-        tweetRepo = TweetRepositoryFactory.getTweetRepository("test");
+        tweetRepo = TweetRepositoryFactory.getTweetRepository(DBEnvironment.TEST);
 
         brexitTweet = new Tweet();
         brexitTweet.setText("brexit was a very bad idea");
