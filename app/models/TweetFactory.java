@@ -32,11 +32,17 @@ public class TweetFactory {
         } else if (status.getUser().getLocation() != null) {
             LatLng coordinates = LocationTranslator.addressToCoordinates(status.getUser().getLocation());
             if (coordinates != null) {
-                return buildTweetFields(status);
+                return buildTweetFields(status, coordinates);
             }
         }
         // Tweet is useless without a GeoLocation tag so return null
         return null;
+    }
+
+    private static Tweet buildTweetFields(Status status, LatLng coordinates) {
+        Tweet tweet = buildTweetFields(status);
+        tweet.setGeoLocation(new GeoLocation(coordinates.lat, coordinates.lng));
+        return tweet;
     }
 
     private static Tweet buildTweetFields(Status status) {
@@ -64,7 +70,7 @@ public class TweetFactory {
         boolean hasValidAttributes = true;
 
         if (status.getText() == null) hasValidAttributes = false;
-        if (status.getGeoLocation() == null || status.getUser().getLocation() == null) hasValidAttributes = false;
+        if (status.getGeoLocation() == null && status.getUser().getLocation() == null) hasValidAttributes = false;
         if (status.getId() == 0) hasValidAttributes = false;
 
         return hasValidAttributes;
