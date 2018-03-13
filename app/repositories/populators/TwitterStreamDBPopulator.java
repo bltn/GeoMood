@@ -18,8 +18,6 @@ import java.util.List;
  */
 public class TwitterStreamDBPopulator {
 
-    private static List<Status> tweets = new ArrayList<Status>();
-
     /**
      * @param args 1 argument, as follows:
      *             tweet limit (how many tweets to save before exiting)
@@ -27,10 +25,11 @@ public class TwitterStreamDBPopulator {
     public static void main(String[] args) {
         int tweetSaveLimit = Integer.parseInt(args[0]);
 
+
         TwitterStreamFactory tf = new TwitterStreamFactory();
         TwitterStream twitterStream = tf.getInstance();
 
-        TweetRepository tweetRepo = TweetRepositoryFactory.getTweetRepository(DBEnvironment.DEV);
+        TweetRepository tweetRepo = TweetRepositoryFactory.getTweetRepository(DBEnvironment.TEST);
 
         StatusListener listener = new StatusListener() {
 
@@ -38,7 +37,9 @@ public class TwitterStreamDBPopulator {
 
             @Override
             public void onStatus(Status status) {
-                tweets.add(status);
+                // whether the tweet is valid and should be saved
+                boolean isValidTweet = false;
+
                 if (tweetsSavedSoFar >= tweetSaveLimit) System.exit(0);
 
                 boolean hasAtLeastOneLocation = status.getGeoLocation() != null || status.getUser().getLocation() != null;
@@ -46,23 +47,33 @@ public class TwitterStreamDBPopulator {
                 if (status.getLang().equals("en") && hasAtLeastOneLocation) {
                     Tweet tweet = new Tweet();
                     tweet.setText(status.getText());
+                    tweet.setTweetId(status.getId());
 
                     // infer GeoLocation if it isn't explicitly set
                     if (status.getGeoLocation() == null) {
                         LatLng coordinates = LocationTranslator.addressToCoordinates(status.getUser().getLocation());
-                        tweet.setGeoLocation(new GeoLocation(coordinates.lat, coordinates.lng));
-                        tweet.setUserLocation(status.getUser().getLocation());
+                        // only save if coordinates were derived from the user profile location
+                        if (coordinates != null) {
+                            // set geolocation & textual location based on user profile
+                            tweet.setGeoLocation(new GeoLocation(coordinates.lat, coordinates.lng));
+                            tweet.setUserLocation(status.getUser().getLocation());
+                            // tweet is valid if it has a geolocation
+                            isValidTweet = true;
+                        }
                     } else {
+                        // set geolocation & textual location
                         tweet.setGeoLocation(status.getGeoLocation());
                         tweet.setUserLocation(status.getUser().getLocation());
+                        // tweet is valid if it has a geolocation
+                        isValidTweet = true;
                     }
 
-                    // assign a sentiment value
-                    tweet.setSentimentValue(NLP.getSentiment(status.getText()));
+                    if (isValidTweet) {
+                        // assign a sentiment value
+                        tweet.setSentimentValue(NLP.getSentiment(status.getText()));
 
-                    tweetRepo.save(tweet);
-                    tweetsSavedSoFar++;
-
+                        if (tweetRepo.save(tweet)) tweetsSavedSoFar++;
+                    }
                     System.out.println("**      " + tweetsSavedSoFar + " tweets saved       **");
                 }
             }
