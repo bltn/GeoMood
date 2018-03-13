@@ -10,6 +10,16 @@ public class Tweet  {
     private GeoLocation geoLocation;
     private String userLocation;
 
+    public long getTweetId() {
+        return tweetId;
+    }
+
+    public void setTweetId(long tweetId) {
+        this.tweetId = tweetId;
+    }
+
+    private long tweetId;
+
     private int sentimentValue;
 
     public ObjectId getId() {

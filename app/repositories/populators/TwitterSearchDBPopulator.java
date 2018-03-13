@@ -19,7 +19,7 @@ public class TwitterSearchDBPopulator {
     private static void initStaticFields() {
         TwitterFactory tf = new TwitterFactory();
         searchAPI = tf.getInstance();
-        repo = TweetRepositoryFactory.getTweetRepository(DBEnvironment.DEV);
+        repo = TweetRepositoryFactory.getTweetRepository(DBEnvironment.PRODUCTION);
     }
 
     public static void main(String[] args) {
@@ -33,53 +33,54 @@ public class TwitterSearchDBPopulator {
 
 
     public static void populate(int requiredTweets, String topic) {
-        int savedCount = 0;
-        try {
-            List<Status> statuses = getTweetsFromAPI(requiredTweets, new Query(topic));
+        long initialDBEntryCount = repo.getCount();
+        List<Status> statuses = getTweetsFromAPI(requiredTweets, new Query(topic));
+        System.out.println(statuses.size() + " tweets fetched");
 
-            for (Status status: statuses) {
-                Tweet tweet = createFromStatusIfHasLocation(status);
-                if (tweet != null) {
-                    repo.save(tweet);
-                    savedCount++;
-                }
+        for (Status status: statuses) {
+            Tweet tweet = createFromStatusIfHasLocation(status);
+            if (tweet != null) {
+                repo.save(tweet);
             }
-            System.out.println(savedCount+"/"+requiredTweets+" tweets saved.");
-        } catch (TwitterException e) {
-            System.out.println(e.getMessage());
-            System.exit(0);
         }
-
+        long entriesSaved = repo.getCount() - initialDBEntryCount;
+        System.out.println("You requested "+requiredTweets+" tweets, and "+entriesSaved+" were saved");
     }
 
-    private static List<Status> getTweetsFromAPI(int requiredTweets, Query query) throws TwitterException {
-        // The bottleneck for populating the DB is Google's GeoCoding API, which has a rate limit of 2,500
-        if (requiredTweets > 2500) requiredTweets = 2500;
-
-        // Throw TwitterException if the rate limit has already been exceeded
-        int rateLimitRemaining = searchAPI.getRateLimitStatus().get("/search/tweets").getRemaining();
-        if (rateLimitRemaining == 0) {
-            int resetCountDown = searchAPI.getRateLimitStatus().get("/search/tweets").getSecondsUntilReset();
-            throw new TwitterException("RESTful API rate limit (180/15 minutes) exceeded. "+resetCountDown+"s left.");
-        }
-
+    private static List<Status> getTweetsFromAPI(int requiredTweets, Query query) {
         List<Status> statuses = new ArrayList<Status>();
-        query.setCount(100);
 
-        while (statuses.size() < requiredTweets && rateLimitRemaining > 0) {
-            QueryResult result = searchAPI.search(query);
-            statuses.addAll(result.getTweets());
+        try {
+            // The bottleneck for populating the DB is Google's GeoCoding API, which has a rate limit of 2,500/day
+            if (requiredTweets > 2500) requiredTweets = 2500;
 
-            long lowestStatusId = Long.MAX_VALUE;
+            int querySize = 100;
+            if (requiredTweets < querySize) querySize = requiredTweets;
 
-            for (Status status : statuses) {
-                lowestStatusId = Math.min(status.getId(), lowestStatusId);
+            query.setCount(querySize);
+
+            while (statuses.size() < requiredTweets) {
+                // will throw TwitterException when the rate limit is reached
+                QueryResult result = searchAPI.search(query);
+
+                if (result.getTweets().size() == 0) {
+                    System.out.println("Stopped result iteration early: API calls weren't returning any more tweets");
+                    break;
+                }
+
+                statuses.addAll(result.getTweets());
+
+                long lowestStatusId = Long.MAX_VALUE;
+
+                for (Status status : statuses) {
+                    lowestStatusId = Math.min(status.getId(), lowestStatusId);
+                }
+
+                query.setMaxId(lowestStatusId - 1);
             }
-
-            query.setMaxId(lowestStatusId - 1);
-            rateLimitRemaining = searchAPI.getRateLimitStatus().get("/search/tweets").getRemaining();
+        } catch (TwitterException e) {
+            System.out.println(e.getMessage());
         }
-
         return statuses;
     }
 }

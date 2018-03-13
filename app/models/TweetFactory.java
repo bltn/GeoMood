@@ -23,6 +23,7 @@ public class TweetFactory {
             tweet.setGeoLocation(status.getGeoLocation());
             tweet.setUserLocation(status.getUser().getLocation());
             tweet.setSentimentValue(NLP.getSentiment(status.getText()));
+            tweet.setTweetId(status.getId());
 
             return tweet;
         } else if (status.getUser().getLocation() != null) {
@@ -32,6 +33,7 @@ public class TweetFactory {
                 tweet.setGeoLocation(new GeoLocation(coordinates.lat, coordinates.lng));
                 tweet.setUserLocation(status.getUser().getLocation());
                 tweet.setSentimentValue(NLP.getSentiment(status.getText()));
+                tweet.setTweetId(status.getId());
 
                 return tweet;
             }

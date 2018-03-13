@@ -26,19 +26,23 @@ public class TweetRepository {
         return jongoClient.getCollection(collectionName);
     }
 
+    public long getCount() {
+        return tweetCollection.count();
+    }
+
     public boolean save(Tweet tweet) {
-        boolean shouldBeSaved = false;
-
-        // save if it has a geolocation
-        if (tweet.getGeoLocation() != null) shouldBeSaved = true;
-
-        // save if it has a non-empty user profile location
-        if (tweet.getUserLocation() != null) {
-            if (!tweet.getUserLocation().trim().isEmpty()) shouldBeSaved = true;
+        try {
+            // save if it has a geolocation
+            if (tweet.getGeoLocation() != null) {
+                tweetCollection.save(tweet);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Error saving tweet: " + e.getMessage());
+            return false;
         }
-
-        if (shouldBeSaved) tweetCollection.save(tweet);
-        return shouldBeSaved;
     }
 
     public List<Tweet> findTweetsWithTopic(String topic) {
