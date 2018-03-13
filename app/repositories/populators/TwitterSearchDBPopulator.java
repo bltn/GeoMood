@@ -9,7 +9,7 @@ import twitter4j.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static models.TweetFactory.createFromStatusIfHasLocation;
+import static models.TweetFactory.createFromStatus;
 
 public class TwitterSearchDBPopulator {
 
@@ -38,7 +38,7 @@ public class TwitterSearchDBPopulator {
         System.out.println(statuses.size() + " tweets fetched");
 
         for (Status status: statuses) {
-            Tweet tweet = createFromStatusIfHasLocation(status);
+            Tweet tweet = createFromStatus(status);
             if (tweet != null) {
                 repo.save(tweet);
             }

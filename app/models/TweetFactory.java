@@ -10,35 +10,64 @@ public class TweetFactory {
 
     /**
      * Creates a Tweet (model) Object from a Twitter4j Status Object,
-     * if its location is either stated explicitly in its GeoLocation field
-     * or can be inferred using its user profile location
+     * if the Status Object is 'valid'. See: statusHasValidAttributes() for definition of valid.
+     *
      * @param status Twitter4j Status object
-     * @return
+     * @return Tweet object created from the Status object, or null if the Status object
+     * was invalid
      */
-    public static Tweet createFromStatusIfHasLocation(Status status) {
-        Tweet tweet = new Tweet();
+    public static Tweet createFromStatus(Status status) {
+        boolean statusIsValid = statusHasValidAttributes(status);
 
+        if (statusIsValid) {
+            return initialiseTweetFromStatus(status);
+        } else {
+            return null;
+        }
+    }
+
+    private static Tweet initialiseTweetFromStatus(Status status) {
         if (status.getGeoLocation() != null) {
-            tweet.setText(status.getText());
-            tweet.setGeoLocation(status.getGeoLocation());
-            tweet.setUserLocation(status.getUser().getLocation());
-            tweet.setSentimentValue(NLP.getSentiment(status.getText()));
-            tweet.setTweetId(status.getId());
-
-            return tweet;
+            return buildTweetFields(status);
         } else if (status.getUser().getLocation() != null) {
             LatLng coordinates = LocationTranslator.addressToCoordinates(status.getUser().getLocation());
             if (coordinates != null) {
-                tweet.setText(status.getText());
-                tweet.setGeoLocation(new GeoLocation(coordinates.lat, coordinates.lng));
-                tweet.setUserLocation(status.getUser().getLocation());
-                tweet.setSentimentValue(NLP.getSentiment(status.getText()));
-                tweet.setTweetId(status.getId());
-
-                return tweet;
+                return buildTweetFields(status);
             }
         }
+        // Tweet is useless without a GeoLocation tag so return null
         return null;
+    }
+
+    private static Tweet buildTweetFields(Status status) {
+        Tweet tweet = new Tweet();
+
+        tweet.setText(status.getText());
+        tweet.setGeoLocation(status.getGeoLocation());
+        tweet.setUserLocation(status.getUser().getLocation());
+        tweet.setSentimentValue(NLP.getSentiment(status.getText()));
+        tweet.setTweetId(status.getId());
+
+        return tweet;
+    }
+
+    /**
+     * For the purpose of Tweet creation, a Status object is the following are not null:
+     * - status.getText()
+     * - status.getId()
+     * - status.getGeoLocation() and/or status.getUser().getLocation()
+     *
+     * @param status Twitter4j Status object to be validated
+     * @return whether or not the object contains the required fields
+     */
+    private static boolean statusHasValidAttributes(Status status) {
+        boolean hasValidAttributes = true;
+
+        if (status.getText() == null) hasValidAttributes = false;
+        if (status.getGeoLocation() == null || status.getUser().getLocation() == null) hasValidAttributes = false;
+        if (status.getId() == 0) hasValidAttributes = false;
+
+        return hasValidAttributes;
     }
 
 }
