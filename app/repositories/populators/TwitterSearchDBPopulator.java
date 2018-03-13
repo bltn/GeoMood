@@ -37,11 +37,16 @@ public class TwitterSearchDBPopulator {
         List<Status> statuses = getTweetsFromAPI(requiredTweets, new Query(topic));
         System.out.println(statuses.size() + " tweets fetched");
 
+        long startingDBSize = repo.getCount();
+        int iterationCounter = 0;
+
         for (Status status: statuses) {
             Tweet tweet = createFromStatus(status);
             if (tweet != null) {
                 repo.save(tweet);
             }
+            iterationCounter++;
+            System.out.println("Tweets saved so far: " + (repo.getCount() - startingDBSize)+"/"+iterationCounter);
         }
         long entriesSaved = repo.getCount() - initialDBEntryCount;
         System.out.println("You requested "+requiredTweets+" tweets, and "+entriesSaved+" were saved");
@@ -58,6 +63,7 @@ public class TwitterSearchDBPopulator {
             if (requiredTweets < querySize) querySize = requiredTweets;
 
             query.setCount(querySize);
+            query.setMaxId(973127203495006208L);
 
             while (statuses.size() < requiredTweets) {
                 // will throw TwitterException when the rate limit is reached
@@ -77,6 +83,7 @@ public class TwitterSearchDBPopulator {
                 }
 
                 query.setMaxId(lowestStatusId - 1);
+                System.out.println("low"+lowestStatusId);
             }
         } catch (TwitterException e) {
             System.out.println(e.getMessage());
