@@ -10,6 +10,7 @@
 }
 
 @main(scripts) {
+
     @for(tweet <- tweets) {
         <span class="tweet" data-lat="@tweet.getGeoLocation().getLatitude"
         data-lng="@tweet.getGeoLocation().getLongitude" data-text="@tweet.getText"

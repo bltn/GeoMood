@@ -7,6 +7,7 @@ import repositories.DBEnvironment;
 import repositories.TweetRepository;
 import repositories.TweetRepositoryFactory;
 import views.html.map_visualisation;
+import views.html.tweets_not_found;
 
 import java.util.List;
 
@@ -14,8 +15,15 @@ public class MapController extends Controller {
 
     public Result visualiseTopic() {
         String topic = request().getQueryString("topic");
-        TweetRepository repo = TweetRepositoryFactory.getTweetRepository(DBEnvironment.DEV);
+        TweetRepository repo = TweetRepositoryFactory.getTweetRepository(DBEnvironment.PRODUCTION);
+
         List<Tweet> tweets = repo.findTweetsWithTopic(topic);
-        return ok(map_visualisation.render(tweets, topic));
+
+        if (tweets.size() > 0) {
+            return ok(map_visualisation.render(tweets, topic));
+        } else {
+            return ok(tweets_not_found.render(topic));
+        }
+
     }
 }
