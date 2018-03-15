@@ -30,7 +30,7 @@ public class TwitterStreamDBPopulator {
         TwitterStreamFactory tf = new TwitterStreamFactory();
         TwitterStream twitterStream = tf.getInstance();
 
-        TweetRepository tweetRepo = TweetRepositoryFactory.getTweetRepository(DBEnvironment.TEST);
+        TweetRepository tweetRepo = TweetRepositoryFactory.getTweetRepository(DBEnvironment.PRODUCTION);
 
         StatusListener listener = new StatusListener() {
 
@@ -39,12 +39,15 @@ public class TwitterStreamDBPopulator {
             @Override
             public void onStatus(Status status) {
                 if (tweetsSavedSoFar >= tweetSaveLimit) System.exit(0);
-                Tweet tweet = TweetFactory.createFromStatus(status);
-                // non-null implies it's valid as determined by the Factory
-                if (tweet != null) {
-                    if (tweetRepo.save(tweet)) tweetsSavedSoFar++;
+
+                if (status.getLang().equals("en")) {
+                    Tweet tweet = TweetFactory.createFromStatus(status);
+                    // non-null implies it's valid as determined by the Factory
+                    if (tweet != null) {
+                        if (tweetRepo.save(tweet)) tweetsSavedSoFar++;
+                    }
+                    System.out.println("**      " + tweetsSavedSoFar + " tweets saved       **");
                 }
-                System.out.println("**      " + tweetsSavedSoFar + " tweets saved       **");
             }
 
             @Override
