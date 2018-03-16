@@ -2,8 +2,51 @@ h2#stats-tweet-title {
     margin-left: 20px;
 }
 
+div#stats-center-panel {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+ul#stats-toolbar {
+    list-style-type: none;
+    margin: 0 auto 8px auto;
+    padding: 0;
+    width: 500px;
+    height: 30px;
+    overflow: hidden;
+}
+
+ul#stats-toolbar li {
+    display: inline;
+    line-height: 30px;
+    padding: 0;
+    color: black;
+    font-size: 14px;
+    font-family: serif;
+}
+
+ul#stats-toolbar li a {
+    display: inline-block;
+    padding: 0 10px;
+}
+
+ul#stats-toolbar li a:hover {
+    color: blue;
+    background-color: yellow;
+}
+
 div#chart_div {
     margin: auto;
-    width: 800px;
+    width: 500px;
     border: 1px solid lightgrey;
+}
+
+div#text-breakdown {
+    width: 500px;
+    margin: auto;
+}
+
+div#text-breakdown h3 {
+    font-family: serif;
 }

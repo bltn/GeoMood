@@ -1,4 +1,4 @@
-@(tweets: List[Tweet], topic: String)
+@(tweets: List[Tweet], topic: String, sentimentFrequencies: Map[String, Integer])
 
 @scripts = {
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -9,14 +9,31 @@
 
     <h2 id="stats-tweet-title">"@topic"</h2>
 
+    <span class="positive-sentiment" data-frequency="@sentimentFrequencies.get("positive")"></span>
+    <span class="neutral-sentiment" data-frequency="@sentimentFrequencies.get("neutral")"></span>
+    <span class="negative-sentiment" data-frequency="@sentimentFrequencies.get("negative")"></span>
+
     @for(tweet <- tweets) {
         <span class="tweet" data-lat="@tweet.getGeoLocation().getLatitude"
         data-lng="@tweet.getGeoLocation().getLongitude" data-text="@tweet.getText"
         data-sentiment="@tweet.getSentimentValue"></span>
     }
 
-    <div id="chart_div"></div>
-    <div id="text-breakdown">
-        <h3>In plain English:</h3>
+    <div id="stats-center-panel">
+        <ul id="stats-toolbar">
+            <li><a href="@routes.HomeController.renderHomePage()" id="new-topic-link">Search for a new topic</a></li>
+            <li><a href="@routes.MapController.visualiseTopic()?topic=@topic">Map visualisation</a></li>
+        </ul>
+
+        <div id="chart_div"></div>
+
+        <div id="text-breakdown">
+            <h3>In plain English:</h3>
+            <ul>
+                <li><span class="green">@sentimentFrequencies.get("positive")</span> tweets were positive.</li>
+                <li><span class="blue">@sentimentFrequencies.get("neutral")</span> tweets were neutral.</li>
+                <li><span class="red">@sentimentFrequencies.get("negative")</span> tweets were negative.</li>
+            </ul>
+        </div>
     </div>
 }

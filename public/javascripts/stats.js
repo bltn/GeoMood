@@ -10,36 +10,24 @@ google.charts.setOnLoadCallback(drawChart);
 function drawChart() {
 
     var tweets = document.getElementsByClassName("tweet");
-    // instantiate map representing sentiment (key) and their frequencies (value)
-    var sentimentFrequency = new Map();
-    sentimentFrequency.set("Positive", 0);
-    sentimentFrequency.set("Neutral", 0);
-    sentimentFrequency.set("Negative", 0);
 
-
-    for (i = 0; i < tweets.length; i++) {
-        if (Number(tweets[i].dataset.sentiment) > 2) {
-            sentimentFrequency.set("Positive", (sentimentFrequency.get("Positive")+1));
-        } else if (Number(tweets[i].dataset.sentiment) === 2) {
-            sentimentFrequency.set("Neutral", (sentimentFrequency.get("Neutral")+1));
-        } else if (Number(tweets[i].dataset.sentiment) < 2) {
-            sentimentFrequency.set("Negative", (sentimentFrequency.get("Negative")+1));
-        }
-    }
+    var positiveSentimentFreq = Number(document.getElementsByClassName("positive-sentiment")[0].dataset.frequency);
+    var neutralSentimentFreq = Number(document.getElementsByClassName("neutral-sentiment")[0].dataset.frequency);
+    var negativeSentimentFreq = Number(document.getElementsByClassName("negative-sentiment")[0].dataset.frequency);
 
     // Create the data table.
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Sentiment');
     data.addColumn('number', 'Number of tweets');
-    data.addRow(['Positive', sentimentFrequency.get("Positive")]);
-    data.addRow(['Neutral', sentimentFrequency.get("Neutral")]);
-    data.addRow(['Negative', sentimentFrequency.get("Negative")]);
+    data.addRow(['Positive', positiveSentimentFreq]);
+    data.addRow(['Neutral', neutralSentimentFreq]);
+    data.addRow(['Negative', negativeSentimentFreq]);
 
     // Set chart options
-    var options = {'title':'Tweet sentiment breakdown',
+    var options = {'title':'Tweet breakdown by sentiment',
         'colors': ['green', 'blue', 'red'],
-        'width': 800,
-        'height': 400,
+        'width': 500,
+        'height': 300,
         'is3D': true
     };
 

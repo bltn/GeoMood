@@ -9,6 +9,18 @@ body {
     position: absolute;
 }
 
+span.red {
+    color: red;
+}
+
+span.blue {
+    color: blue;
+}
+
+span.green {
+    color: green;
+}
+
 ul#nav {
     list-style-type: none;
     margin: 0;
