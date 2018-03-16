@@ -1,5 +1,5 @@
 function renderNewTopicSearchForm() {
-    var topicSearchForm = document.getElementById("map-new-topic-search");
+    var topicSearchForm = document.getElementById("hidden-new-topic-search");
     var newTopicLink = document.getElementById("new-topic-link");
 
     topicSearchForm.style.display = "inline-block";
@@ -8,7 +8,7 @@ function renderNewTopicSearchForm() {
 }
 
 function hideNewTopicSearchForm() {
-    var topicSearchForm = document.getElementById("map-new-topic-search");
+    var topicSearchForm = document.getElementById("hidden-new-topic-search");
     var newTopicLink = document.getElementById("new-topic-link");
 
     topicSearchForm.reset();

@@ -26,17 +26,17 @@ ul#map-toolbar li a:hover {
     background-color: yellow;
 }
 
-ul#map-toolbar form#map-new-topic-search {
+ul#map-toolbar form#hidden-new-topic-search {
     display: none;
     margin: 0;
 }
 
-ul#map-toolbar form#map-new-topic-search span {
+ul#map-toolbar form#hidden-new-topic-search span {
     color: red;
     font-weight: lighter;
 }
 
-ul#map-toolbar form#map-new-topic-search span:hover {
+ul#map-toolbar form#hidden-new-topic-search span:hover {
     color: white;
     background-color: red;
     cursor: pointer;
@@ -45,7 +45,8 @@ ul#map-toolbar form#map-new-topic-search span:hover {
 div#map-container {
     height: 80%;
     width: 70%;
-    margin-left: 2%;
+    margin-left: 15%;
+    margin-right: 15%;
     display: inline-block;
 }
 
@@ -64,10 +65,4 @@ div#legend {
     padding: 10px;
     margin: 10px;
     border: 3px solid #000;
-}
-
-#chart_div {
-    width: 25%;
-    height: 80%;
-    display: inline-block;
 }

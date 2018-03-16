@@ -5,8 +5,6 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDN5oYZL5dP2djoGvYLJRTMfVgDNgw93Ew&callback=initMap">
     </script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="@routes.Assets.at("javascripts/stats.js")" type="text/javascript"></script>
 }
 
 @main(scripts) {
@@ -22,16 +20,18 @@
         <ul id="map-toolbar">
             <li><a href="@routes.MapController.visualiseTopic()" id="new-topic-link"
             onclick="return renderNewTopicSearchForm()">Search for a new topic</a></li>
+            <li><a href="@routes.StatsController.visualiseTopic()?topic=@topic">Detailed statistical breakdown</a></li>
 
-            <form id="map-new-topic-search" method="GET" action="@routes.MapController.visualiseTopic()">
+
+            <form id="hidden-new-topic-search" method="GET" action="@routes.MapController.visualiseTopic()">
                 <span onclick="return hideNewTopicSearchForm()">x</span>
                 <input type="text" name="topic"/>
                 <input type="submit" />
             </form>
         </ul>
+
         <div id="map"></div>
+
         <div id="legend"><h3>Legend</h3></div>
     </div>
-
-    <div id="chart_div"></div>
 }

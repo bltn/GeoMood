@@ -37,8 +37,11 @@ function drawChart() {
 
     // Set chart options
     var options = {'title':'Tweet sentiment breakdown',
-        'width': 300,
-        'height': 300};
+        'colors': ['green', 'blue', 'red'],
+        'width': 800,
+        'height': 400,
+        'is3D': true
+    };
 
     // Instantiate and draw our chart, passing in some options.
     var chart = new google.visualization.PieChart(document.getElementById('chart_div'));

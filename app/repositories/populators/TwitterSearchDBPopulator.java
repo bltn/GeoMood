@@ -63,7 +63,7 @@ public class TwitterSearchDBPopulator {
             if (requiredTweets < querySize) querySize = requiredTweets;
 
             query.setCount(querySize);
-            query.setMaxId(973127203495006208L);
+            //query.setMaxId(970783760328347654L);
 
             while (statuses.size() < requiredTweets) {
                 // will throw TwitterException when the rate limit is reached
@@ -83,7 +83,7 @@ public class TwitterSearchDBPopulator {
                 }
 
                 query.setMaxId(lowestStatusId - 1);
-                System.out.println("low"+lowestStatusId);
+                System.out.println("lowest: "+lowestStatusId);
             }
         } catch (TwitterException e) {
             System.out.println(e.getMessage());

@@ -1,0 +1,9 @@
+h2#stats-tweet-title {
+    margin-left: 20px;
+}
+
+div#chart_div {
+    margin: auto;
+    width: 800px;
+    border: 1px solid lightgrey;
+}
