@@ -2,11 +2,12 @@ package repositories;
 
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
-import com.typesafe.config.ConfigFactory;
 import models.Tweet;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
+import service.BoundingBox;
+import service.UKBoundingBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,23 +47,42 @@ public class TweetRepository {
     }
 
     public List<Tweet> findTweetsWithTopic(String topic) {
-        return fetchByTopic(topic);
+        return convertMongoCursorToList(fetchByTopic(topic));
+    }
+
+    public List<Tweet> findUKTweetsWithTopic(String topic) {
+        MongoCursor<Tweet> tweets = fetchByTopic(topic);
+        UKBoundingBox box = new UKBoundingBox();
+
+        return filterMongoCursorByBoundingBox(tweets, box);
     }
 
     public void remove(Tweet tweet) {
         tweetCollection.remove(tweet.getId());
     }
 
-    private List<Tweet> fetchByTopic(String topic) {
-        MongoCursor<Tweet> matchingTweets = tweetCollection.find("{text:#}", Pattern.compile(".*"+topic+".*")).as(Tweet.class);
-        return convertMongoCursorToList(matchingTweets);
-    }
-
-    private List<Tweet> convertMongoCursorToList(MongoCursor<Tweet> mongoCursorTweets) {
+    private List<Tweet> filterMongoCursorByBoundingBox(MongoCursor<Tweet> cursor, BoundingBox boundingBox) {
         List<Tweet> tweets = new ArrayList<Tweet>();
 
-        while (mongoCursorTweets.hasNext()) {
-            tweets.add(mongoCursorTweets.next());
+        while (cursor.hasNext()) {
+            Tweet tweet = cursor.next();
+            if (boundingBox.contains(tweet.getGeoLocation().getLatitude(), tweet.getGeoLocation().getLongitude())) {
+                tweets.add(tweet);
+            }
+        }
+        return tweets;
+    }
+
+    private MongoCursor<Tweet> fetchByTopic(String topic) {
+        MongoCursor<Tweet> matchingTweets = tweetCollection.find("{text:#}", Pattern.compile(".*"+topic+".*")).as(Tweet.class);
+        return matchingTweets;
+    }
+
+    private List<Tweet> convertMongoCursorToList(MongoCursor<Tweet> cursor) {
+        List<Tweet> tweets = new ArrayList<Tweet>();
+
+        while (cursor.hasNext()) {
+            tweets.add(cursor.next());
         }
         return tweets;
     }

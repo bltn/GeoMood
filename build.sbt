@@ -23,4 +23,5 @@ libraryDependencies += "org.mockito" % "mockito-core" % "2.15.0"
 libraryDependencies += "com.google.maps" % "google-maps-services" % "0.2.6"
 libraryDependencies += "org.slf4j" % "slf4j-nop" % "1.7.25"
 
+
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )

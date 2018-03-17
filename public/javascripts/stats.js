@@ -9,8 +9,6 @@ google.charts.setOnLoadCallback(drawChart);
 // draws it.
 function drawChart() {
 
-    var tweets = document.getElementsByClassName("tweet");
-
     var positiveSentimentFreq = Number(document.getElementsByClassName("positive-sentiment")[0].dataset.frequency);
     var neutralSentimentFreq = Number(document.getElementsByClassName("neutral-sentiment")[0].dataset.frequency);
     var negativeSentimentFreq = Number(document.getElementsByClassName("negative-sentiment")[0].dataset.frequency);

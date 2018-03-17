@@ -20,7 +20,8 @@
         <ul id="map-toolbar">
             <li><a href="@routes.MapController.visualiseTopic()" id="new-topic-link"
             onclick="return renderNewTopicSearchForm()">Search for a new topic</a></li>
-            <li><a href="@routes.StatsController.visualiseTopic()?topic=@topic">Detailed statistical breakdown</a></li>
+            <li><a href="@routes.StatsController.visualiseTopic()?topic=@topic">Statistical overview</a></li>
+            <li><a href="@routes.StatsController.visualiseTopicByCountry()?topic=@topic">Statistics by country</a></li>
 
 
             <form id="hidden-new-topic-search" method="GET" action="@routes.MapController.visualiseTopic()">

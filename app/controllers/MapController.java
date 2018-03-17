@@ -20,7 +20,6 @@ public class MapController extends Controller {
         TweetRepository repo = TweetRepositoryFactory.getTweetRepository(DBEnvironment.PRODUCTION);
 
         List<Tweet> tweets = repo.findTweetsWithTopic(topic);
-        //Map<String, Integer> tweetSentimentFrequencies = TweetStats.getSentimentFrequency(tweets);
 
         if (tweets.size() > 0) {
             return ok(map_visualisation.render(tweets, topic));

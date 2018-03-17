@@ -23,6 +23,7 @@
         <ul id="stats-toolbar">
             <li><a href="@routes.HomeController.renderHomePage()" id="new-topic-link">Search for a new topic</a></li>
             <li><a href="@routes.MapController.visualiseTopic()?topic=@topic">Map visualisation</a></li>
+            <li><a href="@routes.StatsController.visualiseTopicByCountry()?topic=@topic">Statistics by country</a></li>
         </ul>
 
         <div id="chart_div"></div>

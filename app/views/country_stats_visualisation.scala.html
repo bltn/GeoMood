@@ -1,0 +1,17 @@
+@(topic: String, sentimentFrequencies: Map[String, Integer])
+
+@scripts = {
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="@routes.Assets.at("javascripts/stats.js")" type="text/javascript"></script>
+}
+
+@main(scripts) {
+    <h2>What people in the UK think about "@topic"</h2>
+
+    <span class="positive-sentiment" data-frequency="@sentimentFrequencies.get("positive")"></span>
+    <span class="neutral-sentiment" data-frequency="@sentimentFrequencies.get("neutral")"></span>
+    <span class="negative-sentiment" data-frequency="@sentimentFrequencies.get("negative")"></span>
+
+
+    <div id="chart_div"></div>
+}

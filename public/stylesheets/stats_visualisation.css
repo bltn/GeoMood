@@ -10,7 +10,7 @@ div#stats-center-panel {
 
 ul#stats-toolbar {
     list-style-type: none;
-    margin: 0 auto 8px auto;
+    margin: 0 auto;
     padding: 0;
     width: 500px;
     height: 30px;
