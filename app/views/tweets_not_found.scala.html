@@ -1,5 +1,8 @@
 @(topic: String)
 
 @main() {
+    @common.nav()
+    @common.toolbar()
+
     <h1>No tweets could be found for topic "@topic". <a href="@routes.HomeController.renderHomePage">Try again.</a></h1>
 }

@@ -6,6 +6,9 @@
 }
 
 @main(scripts) {
+    @common.nav()
+    @common.toolbar()
+
     <h2>What people in the UK think about "@topic"</h2>
 
     <span class="positive-sentiment" data-frequency="@sentimentFrequencies.get("positive")"></span>

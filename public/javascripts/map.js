@@ -1,23 +1,3 @@
-function renderNewTopicSearchForm() {
-    var topicSearchForm = document.getElementById("hidden-new-topic-search");
-    var newTopicLink = document.getElementById("new-topic-link");
-
-    topicSearchForm.style.display = "inline-block";
-    newTopicLink.style.display = "none";
-    return false;
-}
-
-function hideNewTopicSearchForm() {
-    var topicSearchForm = document.getElementById("hidden-new-topic-search");
-    var newTopicLink = document.getElementById("new-topic-link");
-
-    topicSearchForm.reset();
-
-    topicSearchForm.style.display = "none";
-    newTopicLink.style.display = "inline-block";
-    return false;
-}
-
 /**
  * Function called as a callback by the Google Maps Javascript API
  */

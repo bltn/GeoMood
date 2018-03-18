@@ -1,6 +1,9 @@
 @(tweets: List[Tweet])
 
 @main() {
+    @common.nav()
+    @common.toolbar()
+
     @for(tweet <- tweets) {
         <li>@tweet.getText</li>
     }
