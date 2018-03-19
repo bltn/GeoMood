@@ -46,7 +46,7 @@ public class TweetRepositoryTest {
     @Test
     public void saveWithNoGeoLocation() {
         brexitTweet.setGeoLocation(null);
-        assert(tweetRepo.save(brexitTweet));
+        assertFalse(tweetRepo.save(brexitTweet));
     }
 
     @Test
