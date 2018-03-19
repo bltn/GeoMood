@@ -6,8 +6,9 @@ import models.Tweet;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
-import service.BoundingBox;
-import service.UKBoundingBox;
+import service.geo.BoundingBox;
+import service.geo.EUBoundingBox;
+import service.geo.UKBoundingBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,13 @@ public class TweetRepository {
     public List<Tweet> findUKTweetsWithTopic(String topic) {
         MongoCursor<Tweet> tweets = fetchByTopic(topic);
         UKBoundingBox box = new UKBoundingBox();
+
+        return filterMongoCursorByBoundingBox(tweets, box);
+    }
+
+    public List<Tweet> findEUTweetsWithTopic(String topic) {
+        MongoCursor<Tweet> tweets = fetchByTopic(topic);
+        EUBoundingBox box = new EUBoundingBox();
 
         return filterMongoCursorByBoundingBox(tweets, box);
     }

@@ -24,11 +24,13 @@ public class StatsController extends Controller {
 
         List<Tweet> allTweets = fetchAllTweets(topic, DBEnvironment.PRODUCTION);
         List<Tweet> ukTweets = fetchUKTweets(topic, DBEnvironment.PRODUCTION);
+        List<Tweet> euTweets = fetchEUTweets(topic, DBEnvironment.PRODUCTION);
 
         allSentimentFrequencies = new HashMap<String, Map<String, Integer>>();
 
         allSentimentFrequencies.put("all", TweetStats.getSentimentFrequency(allTweets));
         allSentimentFrequencies.put("UK", TweetStats.getSentimentFrequency(ukTweets));
+        allSentimentFrequencies.put("EU", TweetStats.getSentimentFrequency(euTweets));
 
         return renderAppropriatePage(allTweets);
     }
@@ -36,6 +38,11 @@ public class StatsController extends Controller {
     private List<Tweet> fetchAllTweets(String topic, DBEnvironment dbEnvironment) {
         TweetRepository repo = TweetRepositoryFactory.getTweetRepository(dbEnvironment);
         return repo.findTweetsWithTopic(topic);
+    }
+
+    private List<Tweet> fetchEUTweets(String topic, DBEnvironment dbEnvironment) {
+        TweetRepository repo = TweetRepositoryFactory.getTweetRepository(dbEnvironment);
+        return repo.findEUTweetsWithTopic(topic);
     }
 
     private List<Tweet> fetchUKTweets(String topic, DBEnvironment dbEnvironment) {

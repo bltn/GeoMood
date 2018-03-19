@@ -1,4 +1,4 @@
-package service;
+package service.geo;
 
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;

@@ -1,4 +1,6 @@
-package service;
+package service.geo;
+
+import service.geo.BoundingBox;
 
 public class USABoundingBox extends BoundingBox {
 

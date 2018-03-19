@@ -1,7 +1,7 @@
 package models;
 
 import com.google.maps.model.LatLng;
-import service.LocationTranslator;
+import service.geo.LocationTranslator;
 import service.NLP;
 import twitter4j.GeoLocation;
 import twitter4j.Status;

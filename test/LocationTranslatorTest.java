@@ -1,8 +1,7 @@
 import com.google.maps.model.LatLng;
 import org.junit.Before;
 import org.junit.Test;
-import service.LocationTranslator;
-import twitter4j.GeoLocation;
+import service.geo.LocationTranslator;
 
 import static org.junit.Assert.assertNull;
 

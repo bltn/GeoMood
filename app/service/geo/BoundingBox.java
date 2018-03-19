@@ -1,4 +1,4 @@
-package service;
+package service.geo;
 
 public abstract class BoundingBox {
 
