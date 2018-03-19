@@ -1,5 +1,6 @@
+@(topic: String)
+
 <ul id="toolbar">
-    <li><a href="#">Search for a new topic</a></li>
-    <li><a href="#">Map visualisation</a></li>
-    <li><a href="#">Statistics by country</a></li>
+    <li><a href="@routes.MapController.visualiseTopic()?topic=@topic">Map visualisation</a></li>
+    <li><a href="@routes.StatsController.visualiseAllTopicCategories()?topic=@topic">Statistics overview</a></li>
 </ul>

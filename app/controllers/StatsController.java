@@ -7,43 +7,47 @@ import repositories.DBEnvironment;
 import repositories.TweetRepository;
 import repositories.TweetRepositoryFactory;
 import service.TweetStats;
-import views.html.country_stats_visualisation;
 import views.html.stats_visualisation;
 import views.html.tweets_not_found;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class StatsController extends Controller {
 
-    public Result visualiseTopic() {
-        String topic = request().getQueryString("topic");
+    private String topic;
+    private Map<String, Map<String, Integer>> allSentimentFrequencies;
 
-        List<Tweet> tweets = fetchTweets(topic, DBEnvironment.PRODUCTION);
-        Map<String, Integer> sentimentFrequencies = TweetStats.getSentimentFrequency(tweets);
+    public Result visualiseAllTopicCategories() {
+        topic = request().getQueryString("topic");
 
-        if (tweets.size() > 0) {
-            return ok(stats_visualisation.render(tweets, topic, sentimentFrequencies));
-        } else {
-            return ok(tweets_not_found.render(topic));
-        }
+        List<Tweet> allTweets = fetchAllTweets(topic, DBEnvironment.PRODUCTION);
+        List<Tweet> ukTweets = fetchUKTweets(topic, DBEnvironment.PRODUCTION);
+
+        allSentimentFrequencies = new HashMap<String, Map<String, Integer>>();
+
+        allSentimentFrequencies.put("all", TweetStats.getSentimentFrequency(allTweets));
+        allSentimentFrequencies.put("UK", TweetStats.getSentimentFrequency(ukTweets));
+
+        return renderAppropriatePage(allTweets);
     }
 
-    public Result visualiseTopicByCountry() {
-        String topic = request().getQueryString("topic");
-
-        List<Tweet> tweets = fetchTweets(topic, DBEnvironment.PRODUCTION);
-        Map<String, Integer> sentimentFrequencies = TweetStats.getSentimentFrequency(tweets);
-
-        if (tweets.size() > 0) {
-            return ok(country_stats_visualisation.render(topic, sentimentFrequencies));
-        } else {
-            return ok(tweets_not_found.render(topic));
-        }
-    }
-
-    private List<Tweet> fetchTweets(String topic, DBEnvironment dbEnvironment) {
+    private List<Tweet> fetchAllTweets(String topic, DBEnvironment dbEnvironment) {
         TweetRepository repo = TweetRepositoryFactory.getTweetRepository(dbEnvironment);
         return repo.findTweetsWithTopic(topic);
+    }
+
+    private List<Tweet> fetchUKTweets(String topic, DBEnvironment dbEnvironment) {
+        TweetRepository repo = TweetRepositoryFactory.getTweetRepository(dbEnvironment);
+        return repo.findUKTweetsWithTopic(topic);
+    }
+
+    private Result renderAppropriatePage(List<Tweet> tweets) {
+        if (tweets.size() > 0) {
+            return ok(stats_visualisation.render(topic, allSentimentFrequencies));
+        } else {
+            return ok(tweets_not_found.render(topic));
+        }
     }
 }

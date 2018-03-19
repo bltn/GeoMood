@@ -10,7 +10,7 @@
 @main(scripts) {
 
     @common.nav()
-    @common.toolbar()
+    @common.toolbar(topic)
 
     @for(tweet <- tweets) {
         <span class="tweet" data-lat="@tweet.getGeoLocation().getLatitude"
