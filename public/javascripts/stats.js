@@ -5,6 +5,7 @@ google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawOverviewChart);
 google.charts.setOnLoadCallback(drawUKChart);
 google.charts.setOnLoadCallback(drawEUChart);
+google.charts.setOnLoadCallback(drawUSCANChart);
 
 // Callback that creates and populates a data table,
 // instantiates the pie chart, passes in the data and
@@ -93,5 +94,34 @@ function drawEUChart() {
 
     // Instantiate and draw our chart, passing in some options.
     var chart = new google.visualization.PieChart(document.getElementById('eu_chart_div'));
+    chart.draw(data, options);
+}
+
+function drawUSCANChart() {
+
+    var sentimentFrequencies = document.getElementById("uscan-sentiment-frequencies");
+
+    var positiveFreq = Number(sentimentFrequencies.dataset.positive);
+    var neutralFreq = Number(sentimentFrequencies.dataset.neutral);
+    var negativeFreq = Number(sentimentFrequencies.dataset.negative);
+
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Sentiment');
+    data.addColumn('number', 'Number of tweets');
+    data.addRow(['Positive', positiveFreq]);
+    data.addRow(['Neutral', neutralFreq]);
+    data.addRow(['Negative', negativeFreq]);
+
+    // Set chart options
+    var options = {'title':'EU tweet breakdown by sentiment',
+        'colors': ['green', 'blue', 'red'],
+        'width': 500,
+        'height': 300,
+        'is3D': true
+    };
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.PieChart(document.getElementById('uscan_chart_div'));
     chart.draw(data, options);
 }
