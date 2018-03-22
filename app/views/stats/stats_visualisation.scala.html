@@ -1,0 +1,40 @@
+@(topic: String, sentimentFrequencies: Map[String, Map[String, Double]])
+
+@scripts = {
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="@routes.Assets.at("/javascripts/stats.js")" type="text/javascript"></script>
+}
+
+@main(scripts) {
+    @common.nav()
+    @common.toolbar(topic)
+
+    @stats.overview_stats(topic)
+    @stats.uk_stats(topic)
+    @stats.eu_stats(topic)
+    @stats.uscan_stats(topic)
+
+    <!---- Define the data elements used by the overview pie chart ---->
+    @defining(sentimentFrequencies.get("all")) { sentFreq =>
+        <div id="overview-sentiment-frequencies" data-positive="@sentFreq.get("positive")"
+        data-neutral="@sentFreq.get("neutral")" data-negative="@sentFreq.get("negative")"></div>
+    }
+
+    <!---- Define the data elements used by the UK pie chart ---->
+    @defining(sentimentFrequencies.get("UK")) { sentFreq =>
+        <div id="uk-sentiment-frequencies" data-positive="@sentFreq.get("positive")"
+        data-neutral="@sentFreq.get("neutral")" data-negative="@sentFreq.get("negative")"></div>
+    }
+
+    <!---- Define the data elements used by the EU pie chart ---->
+    @defining(sentimentFrequencies.get("EU")) { sentFreq =>
+        <div id="eu-sentiment-frequencies" data-positive="@sentFreq.get("positive")"
+        data-neutral="@sentFreq.get("neutral")" data-negative="@sentFreq.get("negative")"></div>
+    }
+
+    <!---- Define the data elements used by the US & Canada pie chart ---->
+    @defining(sentimentFrequencies.get("USCAN")) { sentFreq =>
+        <div id="uscan-sentiment-frequencies" data-positive="@sentFreq.get("positive")"
+        data-neutral="@sentFreq.get("neutral")" data-negative="@sentFreq.get("negative")"></div>
+    }
+}

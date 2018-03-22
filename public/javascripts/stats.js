@@ -154,7 +154,7 @@ function drawUSCANPieChart() {
     data.addRow(['Negative', negativeFreq]);
 
     // Set chart options
-    var options = {'title':'EU tweet breakdown by sentiment',
+    var options = {'title':'US & Canada tweet breakdown by sentiment',
         'colors': ['green', 'blue', 'red'],
         'width': 500,
         'height': 300,

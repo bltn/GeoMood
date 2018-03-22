@@ -7,7 +7,7 @@ import repositories.DBEnvironment;
 import repositories.TweetRepository;
 import repositories.TweetRepositoryFactory;
 import service.TweetStats;
-import views.html.stats_visualisation;
+import views.html.stats.stats_visualisation;
 import views.html.tweets_not_found;
 
 import java.util.HashMap;
@@ -29,18 +29,12 @@ public class StatsController extends Controller {
         List<Tweet> usCanadaTweets = fetchUSCanadaTweets(topic, DBEnvironment.PRODUCTION);
 
         allSentimentFrequencies = new HashMap<String, Map<String, Double>>();
-        allSentimentPercentages = new HashMap<String, Map<String, Double>>();
-
         allSentimentFrequencies.put("all", TweetStats.getSentimentFrequency(allTweets));
         allSentimentFrequencies.put("UK", TweetStats.getSentimentFrequency(ukTweets));
         allSentimentFrequencies.put("EU", TweetStats.getSentimentFrequency(euTweets));
         allSentimentFrequencies.put("USCAN", TweetStats.getSentimentFrequency(usCanadaTweets));
 
-        allSentimentPercentages.put("UK", TweetStats.getSentimentPercentages(ukTweets));
-        allSentimentPercentages.put("EU", TweetStats.getSentimentPercentages(euTweets));
-        allSentimentPercentages.put("USCAN", TweetStats.getSentimentPercentages(usCanadaTweets));
-
-        return renderAppropriatePage(allTweets);
+        return renderStatsPageIfEnoughTweets(allTweets.size());
     }
 
     private List<Tweet> fetchAllTweets(String topic, DBEnvironment dbEnvironment) {
@@ -63,9 +57,9 @@ public class StatsController extends Controller {
         return repo.findUSCanadaTweetsWithTopic(topic);
     }
 
-    private Result renderAppropriatePage(List<Tweet> tweets) {
-        if (tweets.size() > 0) {
-            return ok(stats_visualisation.render(topic, allSentimentFrequencies, allSentimentPercentages));
+    private Result renderStatsPageIfEnoughTweets(int tweetCount) {
+        if (tweetCount > 0) {
+            return ok(stats_visualisation.render(topic, allSentimentFrequencies));
         } else {
             return ok(tweets_not_found.render(topic));
         }
