@@ -1,4 +1,5 @@
-@(topic: String, sentimentFrequencies: Map[String, Map[String, Integer]])
+@(topic: String, sentimentFrequencies: Map[String, Map[String, Double]],
+        sentimentPercentages: Map[String, Map[String, Double]])
 
 @scripts = {
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -9,25 +10,40 @@
     @common.nav()
     @common.toolbar(topic)
 
-    <!---- Define the data elements used by the overview chart ---->
+    @defining(sentimentPercentages.get("UK")) { sentFreq =>
+        <div id="uk-sentiment-percentages" data-positive="@sentFreq.get("positive")"
+        data-neutral="@sentFreq.get("neutral")" data-negative="@sentFreq.get("negative")"></div>
+    }
+
+    @defining(sentimentPercentages.get("EU")) { sentFreq =>
+        <div id="eu-sentiment-percentages" data-positive="@sentFreq.get("positive")"
+        data-neutral="@sentFreq.get("neutral")" data-negative="@sentFreq.get("negative")"></div>
+    }
+
+    @defining(sentimentPercentages.get("USCAN")) { sentFreq =>
+        <div id="uscan-sentiment-percentages" data-positive="@sentFreq.get("positive")"
+        data-neutral="@sentFreq.get("neutral")" data-negative="@sentFreq.get("negative")"></div>
+    }
+
+    <!---- Define the data elements used by the overview pie chart ---->
     @defining(sentimentFrequencies.get("all")) { sentFreq =>
         <div id="overview-sentiment-frequencies" data-positive="@sentFreq.get("positive")"
         data-neutral="@sentFreq.get("neutral")" data-negative="@sentFreq.get("negative")"></div>
     }
 
-    <!---- Define the data elements used by the UK chart ---->
+    <!---- Define the data elements used by the UK pie chart ---->
     @defining(sentimentFrequencies.get("UK")) { sentFreq =>
         <div id="uk-sentiment-frequencies" data-positive="@sentFreq.get("positive")"
         data-neutral="@sentFreq.get("neutral")" data-negative="@sentFreq.get("negative")"></div>
     }
 
-    <!---- Define the data elements used by the EU chart ---->
+    <!---- Define the data elements used by the EU pie chart ---->
     @defining(sentimentFrequencies.get("EU")) { sentFreq =>
         <div id="eu-sentiment-frequencies" data-positive="@sentFreq.get("positive")"
         data-neutral="@sentFreq.get("neutral")" data-negative="@sentFreq.get("negative")"></div>
     }
 
-    <!---- Define the data elements used by the US & Canada chart ---->
+    <!---- Define the data elements used by the US & Canada pie chart ---->
     @defining(sentimentFrequencies.get("USCAN")) { sentFreq =>
         <div id="uscan-sentiment-frequencies" data-positive="@sentFreq.get("positive")"
         data-neutral="@sentFreq.get("neutral")" data-negative="@sentFreq.get("negative")"></div>
@@ -37,7 +53,11 @@
         How <strong>the world</strong> as a whole feels about <strong>"@topic"</strong>.
         <a href="@routes.HomeController.renderHomePage()">Search for a new topic.</a>
     </p>
-    <div id="overview_chart_div" class="stats_chart"></div>
+
+    <div id="stats_overview_wrapper">
+        <div id="overview_chart_div"></div>
+        <div id="bar_chart_div"></div>
+    </div>
 
     <p class="topic-info">
         How <strong>the UK</strong> feels about <strong>"@topic"</strong>.

@@ -1,6 +1,7 @@
 package repositories;
 
 import com.mongodb.DB;
+import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import models.Tweet;
 import org.jongo.Jongo;
@@ -21,9 +22,9 @@ public class TweetRepository {
     }
 
     private MongoCollection loadMongoCollection(String databaseName, String collectionName) {
-        DB database = new MongoClient().getDB(databaseName);
-        Jongo jongoClient = new Jongo(database);
-        return jongoClient.getCollection(collectionName);
+        DB database = DBSingleton.getInstance(databaseName);
+        Jongo jongo = JongoSingleton.getInstance(database);
+        return jongo.getCollection(collectionName);
     }
 
     public long getCount() {

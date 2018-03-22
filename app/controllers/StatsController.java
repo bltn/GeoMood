@@ -17,7 +17,8 @@ import java.util.Map;
 public class StatsController extends Controller {
 
     private String topic;
-    private Map<String, Map<String, Integer>> allSentimentFrequencies;
+    private Map<String, Map<String, Double>> allSentimentFrequencies;
+    private Map<String, Map<String, Double>> allSentimentPercentages;
 
     public Result visualiseAllTopicCategories() {
         topic = request().getQueryString("topic");
@@ -27,12 +28,17 @@ public class StatsController extends Controller {
         List<Tweet> euTweets = fetchEUTweets(topic, DBEnvironment.PRODUCTION);
         List<Tweet> usCanadaTweets = fetchUSCanadaTweets(topic, DBEnvironment.PRODUCTION);
 
-        allSentimentFrequencies = new HashMap<String, Map<String, Integer>>();
+        allSentimentFrequencies = new HashMap<String, Map<String, Double>>();
+        allSentimentPercentages = new HashMap<String, Map<String, Double>>();
 
         allSentimentFrequencies.put("all", TweetStats.getSentimentFrequency(allTweets));
         allSentimentFrequencies.put("UK", TweetStats.getSentimentFrequency(ukTweets));
         allSentimentFrequencies.put("EU", TweetStats.getSentimentFrequency(euTweets));
         allSentimentFrequencies.put("USCAN", TweetStats.getSentimentFrequency(usCanadaTweets));
+
+        allSentimentPercentages.put("UK", TweetStats.getSentimentPercentages(ukTweets));
+        allSentimentPercentages.put("EU", TweetStats.getSentimentPercentages(euTweets));
+        allSentimentPercentages.put("USCAN", TweetStats.getSentimentPercentages(usCanadaTweets));
 
         return renderAppropriatePage(allTweets);
     }
@@ -59,7 +65,7 @@ public class StatsController extends Controller {
 
     private Result renderAppropriatePage(List<Tweet> tweets) {
         if (tweets.size() > 0) {
-            return ok(stats_visualisation.render(topic, allSentimentFrequencies));
+            return ok(stats_visualisation.render(topic, allSentimentFrequencies, allSentimentPercentages));
         } else {
             return ok(tweets_not_found.render(topic));
         }

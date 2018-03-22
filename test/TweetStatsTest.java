@@ -10,29 +10,55 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 public class TweetStatsTest {
-    private Map<String, Integer> sentimentFrequencies;
     private List<Tweet> tweets;
 
     @Before
     public void setUp() {
         tweets = new ArrayList<Tweet>();
+        addPositiveTweets(tweets, 15);
+        addNeutralTweets(tweets, 10);
+        addNegativeweets(tweets, 5);
+    }
+
+    @Test
+    public void getTweetSentimentPercentages() {
+        Map<String, Double> sentimentPercentages = TweetStats.getSentimentPercentages(tweets);
+
+        assertEquals(50, Math.round(sentimentPercentages.get("positive")));
+        assertEquals(33, Math.round(sentimentPercentages.get("neutral")));
+        assertEquals(17, Math.round(sentimentPercentages.get("negative")));
     }
 
     @Test
     public void getTweetSentimentFrequency() {
-        // Populate the list with 30 tweets
-        for (int i = 0; i < 30; i++) tweets.add(new Tweet());
-        // give 15 tweets a positive sentiment value
-        for (int i = 0; i < 15; i++) tweets.get(i).setSentimentValue(3);
-        // give 10 tweets a neutral sentiment value
-        for (int i = 15; i < 25; i++) tweets.get(i).setSentimentValue(2);
-        // give 5 tweets a negative sentiment value
-        for (int i = 25; i < 20; i++) tweets.get(i).setSentimentValue(1);
+        Map<String, Double> sentimentFrequencies = TweetStats.getSentimentFrequency(tweets);
 
-        sentimentFrequencies = TweetStats.getSentimentFrequency(tweets);
+        assertEquals((Double)15.0, sentimentFrequencies.get("positive"));
+        assertEquals((Double)10.0, sentimentFrequencies.get("neutral"));
+        assertEquals((Double)5.0, sentimentFrequencies.get("negative"));
+    }
 
-        assertEquals((Integer)15, sentimentFrequencies.get("positive"));
-        assertEquals((Integer)10, sentimentFrequencies.get("neutral"));
-        assertEquals((Integer)5, sentimentFrequencies.get("negative"));
+    private void addPositiveTweets(List<Tweet> tweets, int numTweets) {
+        for (int i = 0; i < numTweets; i++) {
+            Tweet tweet = new Tweet();
+            tweet.setSentimentValue(3);
+            tweets.add(tweet);
+        }
+    }
+
+    private void addNeutralTweets(List<Tweet> tweets, int numTweets) {
+        for (int i = 0; i < numTweets; i++) {
+            Tweet tweet = new Tweet();
+            tweet.setSentimentValue(2);
+            tweets.add(tweet);
+        }
+    }
+
+    private void addNegativeweets(List<Tweet> tweets, int numTweets) {
+        for (int i = 0; i < numTweets; i++) {
+            Tweet tweet = new Tweet();
+            tweet.setSentimentValue(1);
+            tweets.add(tweet);
+        }
     }
 }
