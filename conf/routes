@@ -10,3 +10,4 @@ GET     /assets/*file                   controllers.Assets.at(path="/public", fi
 
 GET     /Map/visualiseTopic             controllers.MapController.visualiseTopic
 GET     /Stats/visualiseAll             controllers.StatsController.visualiseAllTopicCategories
+GET     /WordCloud/visualise            controllers.WordCloudController.visualiseTopic

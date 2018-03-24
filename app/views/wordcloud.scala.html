@@ -1,0 +1,21 @@
+@(topic: String, wordOccurences: Map[String, Integer])
+
+@scripts = {
+    <script src="@routes.Assets.at("javascripts/lib/d3/d3.js")"></script>
+    <script src="@routes.Assets.at("javascripts/lib/d3/d3.layout.cloud.js")"></script>
+    <script src="@routes.Assets.at("javascripts/d3.wordcloud.js")"></script>
+    <script src="@routes.Assets.at("javascripts/wordcloud.js")"></script>
+}
+
+@main(scripts) {
+
+    @common.nav()
+    @common.toolbar(topic)
+
+    @for(key <- wordOccurences.keySet()) {
+        <span class="word" data-text="@key"
+        data-count="@wordOccurences.get(key)"></span>
+    }
+
+    <div id="wordcloud"></div>
+}
