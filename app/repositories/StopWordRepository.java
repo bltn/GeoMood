@@ -3,6 +3,7 @@ package repositories;
 
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
+import javafx.scene.paint.Stop;
 import models.StopWord;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
@@ -11,22 +12,14 @@ import org.jongo.MongoCursor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StopWordRepository {
+public class StopWordRepository extends Repository {
 
-    private MongoCollection stopWordCollection;
-
-    public StopWordRepository(String databaseName, String collectionName) {
-        stopWordCollection = loadMongoCollection(databaseName, collectionName);
-    }
-
-    private MongoCollection loadMongoCollection(String databaseName, String collectionName) {
-        DB database = new MongoClient().getDB(databaseName);
-        Jongo jongo = new Jongo(database);
-        return jongo.getCollection(collectionName);
+    public StopWordRepository(String dbName, String collectionName) {
+        super(dbName, collectionName);
     }
 
     public List<String> getStopWords() {
-        return convertMongoCursorToList(stopWordCollection.find().as(StopWord.class));
+        return convertMongoCursorToList(findAll().as(StopWord.class));
     }
 
     private List<String> convertMongoCursorToList(MongoCursor<StopWord> cursor) {

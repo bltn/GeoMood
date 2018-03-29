@@ -1,47 +1,33 @@
 package repositories;
 
-import com.mongodb.DB;
 import models.Tweet;
-import org.jongo.Jongo;
-import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
-import service.geo.*;
+import service.geo.BoundingBox;
+import service.geo.EUBoundingBox;
+import service.geo.UKBoundingBox;
+import service.geo.USCanadaBoundingBox;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class TweetRepository {
+public class TweetRepository extends Repository {
 
-    private MongoCollection tweetCollection;
 
-    public TweetRepository(String databaseName, String collectionName) {
-        tweetCollection = loadMongoCollection(databaseName, collectionName);
+    public TweetRepository(String dbName, String collectionName) {
+        super(dbName, collectionName);
     }
 
-    private MongoCollection loadMongoCollection(String databaseName, String collectionName) {
-        DB database = MongoClientSingleton.getInstance().getDB(databaseName);
-        Jongo jongo = new Jongo(database);
-        return jongo.getCollection(collectionName);
-    }
-
-    public long getCount() {
-        return tweetCollection.count();
-    }
-
-    public boolean save(Tweet tweet) {
-        try {
-            // save if it has a geolocation
-            if (tweet.getGeoLocation() != null) {
-                tweetCollection.save(tweet);
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            System.out.println("Error saving tweet: " + e.getMessage());
-            return false;
+    public boolean save(Tweet t) {
+        if (t.getGeoLocation() != null) {
+            collection.save(t);
+            return true;
         }
+        return false;
+    }
+
+    public void remove(Tweet t) {
+        collection.remove(t.getId());
     }
 
     public List<Tweet> findTweetsWithTopic(String topic) {
@@ -69,10 +55,6 @@ public class TweetRepository {
         return filterMongoCursorByBoundingBox(tweets, box);
     }
 
-    public void remove(Tweet tweet) {
-        tweetCollection.remove(tweet.getId());
-    }
-
     private List<Tweet> filterMongoCursorByBoundingBox(MongoCursor<Tweet> cursor, BoundingBox boundingBox) {
         List<Tweet> tweets = new ArrayList<Tweet>();
 
@@ -86,7 +68,7 @@ public class TweetRepository {
     }
 
     private MongoCursor<Tweet> fetchByTopic(String topic) {
-        MongoCursor<Tweet> matchingTweets = tweetCollection.find("{text:#}", Pattern.compile(".*"+topic+".*")).as(Tweet.class);
+        MongoCursor<Tweet> matchingTweets = collection.find("{text:#}", Pattern.compile(".*"+topic+".*")).as(Tweet.class);
         return matchingTweets;
     }
 
