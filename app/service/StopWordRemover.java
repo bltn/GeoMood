@@ -1,43 +1,33 @@
 package service;
 
-import controllers.routes;
-import scala.xml.Source;
+import repositories.StopWordRepository;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class StopWordRemover {
 
     private static List<String> stopWords;
-    private static String stopWordFilePath;
+    private static StopWordRepository stopWordRepo;
 
     public static List<String> removeStopWords(List<String> words) {
-        initStopWordList();
+        initRepo();
+        stopWords = stopWordRepo.getStopWords();
+
+        List<String> swOmitted = new ArrayList<>();
 
         for (String word : words) {
             word = word.toLowerCase();
-            if (stopWords.contains(word)) {
-                words.remove(word);
+            if (!stopWords.contains(word)) {
+                swOmitted.add(word);
             }
         }
-
-        return words;
+        return swOmitted;
     }
 
-    private static void initStopWordList() {
-        if (stopWords == null) {
-            stopWordFilePath = "/stopwords.txt";
-            stopWords = new ArrayList<>();
-            try {
-                Stream<String> stream = Files.lines(Paths.get(stopWordFilePath));
-                stream.forEach(stopWords::add);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    private static void initRepo() {
+        if (stopWordRepo == null) {
+            stopWordRepo = new StopWordRepository("util", "stopwords");
         }
     }
 }

@@ -14,8 +14,8 @@ public class WordCounter {
         for (Tweet tweet : tweets) {
             String tweetText = tweet.getText().toLowerCase();
             List<String> words = Arrays.asList(tweetText.split("\\s+"));
-            //List<String> stopWordsOmiited = StopWordRemover.removeStopWords(words);
-            for (String word : words) {
+            List<String> stopWordsOmiited = StopWordRemover.removeStopWords(words);
+            for (String word : stopWordsOmiited) {
                 if (!wordOccurences.containsKey(word)) {
                     wordOccurences.put(word, 1);
                 } else {
