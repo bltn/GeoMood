@@ -1,0 +1,19 @@
+@(topic: String, wordOccurences: Map[String, Integer])
+
+@scripts = {
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="@routes.Assets.at("/javascripts/word_frequency.js")" type="text/javascript"></script>
+}
+
+@main(scripts) {
+    @common.nav()
+    @common.toolbar(topic)
+
+    @for(key <- wordOccurences.keySet()) {
+        <div class="word" data-text="@key" data-count="@wordOccurences.get(key)"></div>
+    }
+
+    <p id="word-frequency-title">Terms commonly associated with <strong>"@topic"</strong></p>
+
+    <div id="word_frequency_chart"></div>
+}

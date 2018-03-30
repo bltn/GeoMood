@@ -1,0 +1,9 @@
+div#word_frequency_chart {
+    width: 800px;
+    margin: auto;
+    display: block;
+}
+
+p#word-frequency-title {
+    text-align: center;
+}

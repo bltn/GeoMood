@@ -17,10 +17,13 @@ public class WordCloudController extends Controller {
 
     public Result visualiseTopic() {
         String topic = request().getQueryString("topic");
+
         TweetRepository repo = TweetRepositoryFactory.getTweetRepository(DBEnvironment.PRODUCTION);
         List<Tweet> tweets = repo.findTweetsWithTopic(topic);
+
         Map<String, Integer> wordOccurences = WordCounter.getWordCounts(tweets);
         Map<String, Integer> wordOccurencesSorted = MapUtil.getTop50(wordOccurences);
+
         return ok(wordcloud.render(topic, wordOccurencesSorted));
     }
 }

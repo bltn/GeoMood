@@ -6,9 +6,12 @@ import play.mvc.Result;
 import repositories.DBEnvironment;
 import repositories.TweetRepository;
 import repositories.TweetRepositoryFactory;
+import service.MapUtil;
 import service.TweetStats;
+import service.WordCounter;
 import views.html.stats.stats_visualisation;
 import views.html.tweets_not_found;
+import views.html.word_frequency;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +21,16 @@ public class StatsController extends Controller {
 
     private String topic;
     private Map<String, Map<String, Double>> allSentimentFrequencies;
-    private Map<String, Map<String, Double>> allSentimentPercentages;
+
+    public Result visualiseWordFrequency() {
+        topic = request().getQueryString("topic");
+        List<Tweet> tweets = fetchAllTweets(topic, DBEnvironment.PRODUCTION);
+
+        Map<String, Integer> wordOccurences = WordCounter.getWordCounts(tweets);
+        Map<String, Integer> top50WordOccurences = MapUtil.getTop50(wordOccurences);
+
+        return ok(word_frequency.render(topic, top50WordOccurences));
+    }
 
     public Result visualiseAllTopicCategories() {
         topic = request().getQueryString("topic");
@@ -34,7 +46,7 @@ public class StatsController extends Controller {
         allSentimentFrequencies.put("EU", TweetStats.getSentimentFrequency(euTweets));
         allSentimentFrequencies.put("USCAN", TweetStats.getSentimentFrequency(usCanadaTweets));
 
-        return renderStatsPageIfEnoughTweets(allTweets.size());
+        return renderStatsBreakdownIfEnoughTweets(allTweets.size());
     }
 
     private List<Tweet> fetchAllTweets(String topic, DBEnvironment dbEnvironment) {
@@ -57,7 +69,7 @@ public class StatsController extends Controller {
         return repo.findUSCanadaTweetsWithTopic(topic);
     }
 
-    private Result renderStatsPageIfEnoughTweets(int tweetCount) {
+    private Result renderStatsBreakdownIfEnoughTweets(int tweetCount) {
         if (tweetCount > 0) {
             return ok(stats_visualisation.render(topic, allSentimentFrequencies));
         } else {
