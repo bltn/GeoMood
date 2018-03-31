@@ -1,0 +1,20 @@
+@(tweets: List[Tweet], topic: String)
+
+@main() {
+    @common.nav()
+    @common.toolbar(topic)
+
+    <ul id="tweet-list">
+        @for(tweet <- tweets) {
+            @if(tweet.getSentimentValue() > 2) {
+                <li class="positive-sentiment">@tweet.getText()</li>
+            }
+            @if(tweet.getSentimentValue() == 2) {
+                <li class="neutral-sentiment">@tweet.getText()</li>
+            }
+            @if(tweet.getSentimentValue() < 2) {
+                <li class="negative-sentiment">@tweet.getText()</li>
+            }
+        }
+    </ul>
+}

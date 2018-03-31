@@ -12,3 +12,4 @@ GET     /Map/visualiseTopic             controllers.MapController.visualiseTopic
 GET     /Stats/visualiseAll             controllers.StatsController.visualiseAllTopicCategories
 GET     /WordCloud/visualise            controllers.WordCloudController.visualiseTopic
 GET     /Stats/wordFrequencies          controllers.StatsController.visualiseWordFrequency
+GET     /Tweets/showList                controllers.TweetListController.visualiseTopic
