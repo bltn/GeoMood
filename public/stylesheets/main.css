@@ -79,6 +79,11 @@ ul#toolbar li a:hover {
     background-color: #e2e2e2;
 }
 
+ul#toolbar li a.current {
+    color: lightgrey;
+    background-color: rgba(16, 0, 37, 0.67);
+}
+
 p.topic-info {
     text-align: center;
 }
