@@ -1,24 +1,20 @@
-div#stats_overview_wrapper {
+div.overview_stat_panel {
+    width: 400px;
+    height: 300px;
+    display: inline-block;
+    margin: 0;
+    border: 1px solid lightgrey;
+}
+
+div.stats_row_wrapper {
     width: 100%;
     text-align: center;
 }
 
-div#overview_chart_div {
+div.stat_panel {
+    width: 500px;
+    height: 300px;
     display: inline-block;
     margin: 0;
-    border: 1px solid lightgrey;
-}
-
-div#bar_chart_div {
-    display: inline-block;
-    margin: 0;
-    border: 1px solid lightgrey;
-}
-
-
-div.stats_chart {
-    margin-left: 20%;
-    margin-right: 20%;
-    width: 60%;
     border: 1px solid lightgrey;
 }
