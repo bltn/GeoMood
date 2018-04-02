@@ -6,4 +6,8 @@
     <li><a href="@routes.TweetListController.visualiseTopic()?topic=@topic">View list of tweets</a></li>
     <li><a href="@routes.WordCloudController.visualiseTopic()?topic=@topic">Word cloud</a></li>
     <li><a href="@routes.StatsController.visualiseWordFrequency()?topic=@topic">Commonly associated words</a></li>
+
+    <form action="@routes.MapController.visualiseTopic()" method="GET">
+        <input type="text" name="topic" placeholder="Search for a new topic"/>
+    </form>
 </ul>
