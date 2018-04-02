@@ -67,6 +67,7 @@ ul#toolbar li {
     padding: 0;
     color: black;
     font-size: 12px;
+    float: right;
 }
 
 ul#toolbar li a {
@@ -84,20 +85,10 @@ ul#toolbar li a.current {
     background-color: rgba(255, 214, 0, 0.29);
 }
 
-ul#toolbar form #search {
-    height: 25px;
-    line-height: 25px;
-    border: none;
-    padding: 0 0 0 10px;
-    margin: 2.5px 0;
-    background-color: yellow;
-    border-radius: 20px;
-}
-
 ul#toolbar form {
     display: inline-block;
-    margin-right: 20px;
-    float: right;
+    margin-left: 20px;
+    margin-right: 10px;
 }
 
 ul#toolbar form input {
@@ -106,9 +97,9 @@ ul#toolbar form input {
     border: 1px solid lightgrey;
     padding: 0 10px;
     margin: 4px 0;
-    background-color: rgba(0, 213, 0, 0.37);
     border-radius: 20px;
     width: 300px;
+    font-size: 12px;
 }
 
 ul#toolbar form input:focus {

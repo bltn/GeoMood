@@ -1,13 +1,13 @@
 @(topic: String)
 
 <ul id="toolbar">
-    <li><a href="@routes.MapController.visualiseTopic()?topic=@topic">Map visualisation</a></li>
-    <li><a href="@routes.StatsController.visualiseAllTopicCategories()?topic=@topic">Statistics overview</a></li>
-    <li><a href="@routes.TweetListController.visualiseTopic()?topic=@topic">View list of tweets</a></li>
-    <li><a href="@routes.WordCloudController.visualiseTopic()?topic=@topic">Word cloud</a></li>
-    <li><a href="@routes.StatsController.visualiseWordFrequency()?topic=@topic">Commonly associated words</a></li>
-
     <form action="@routes.MapController.visualiseTopic()" method="GET">
-        <input type="text" name="topic" placeholder="Search for a new topic"/>
+        <input type="text" name="topic" value="@topic"/>
     </form>
+
+    <li><a href="@routes.StatsController.visualiseWordFrequency()?topic=@topic">Commonly associated words</a></li>
+    <li><a href="@routes.WordCloudController.visualiseTopic()?topic=@topic">Word cloud</a></li>
+    <li><a href="@routes.TweetListController.visualiseTopic()?topic=@topic">View list of tweets</a></li>
+    <li><a href="@routes.StatsController.visualiseAllTopicCategories()?topic=@topic">Statistics overview</a></li>
+    <li><a href="@routes.MapController.visualiseTopic()?topic=@topic">Map visualisation</a></li>
 </ul>
