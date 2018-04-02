@@ -1,8 +1,11 @@
-@(tweets: List[Tweet], topic: String)
+@(tweets: List[Tweet], topic: String, sentimentFreqs: Map[String, Double])
 
 @main() {
     @common.nav()
     @common.toolbar(topic)
+
+    <p id="tweet-list-overview">@tweets.size() tweets in total. @sentimentFreqs.get("positive").intValue() positive,
+    @sentimentFreqs.get("neutral").intValue() neutral and @sentimentFreqs.get("negative").intValue() negative.</p>
 
     <ul id="tweet-list">
         @for(tweet <- tweets) {
