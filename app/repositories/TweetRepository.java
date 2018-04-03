@@ -30,6 +30,10 @@ public class TweetRepository extends Repository {
         collection.remove(t.getId());
     }
 
+    public void removeAll() {
+        collection.remove();
+    }
+
     public List<Tweet> findTweetsWithTopic(String topic) {
         return convertMongoCursorToList(fetchByTopic(topic));
     }
@@ -68,7 +72,9 @@ public class TweetRepository extends Repository {
     }
 
     private MongoCursor<Tweet> fetchByTopic(String topic) {
-        MongoCursor<Tweet> matchingTweets = collection.find("{text:#}", Pattern.compile(".*"+topic+".*")).as(Tweet.class);
+        //MongoCursor<Tweet> matchingTweets = collection.find("{text:#}", Pattern.compile(".*"+topic+".*", Pattern.CASE_INSENSITIVE)).as(Tweet.class);
+        MongoCursor<Tweet> matchingTweets = collection.find("{text: {$regex: '.*"+topic+".*', '$options' : 'i'}}").as(Tweet.class);
+
         return matchingTweets;
     }
 
