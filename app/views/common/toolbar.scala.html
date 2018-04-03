@@ -2,7 +2,7 @@
 
 <ul id="toolbar">
     <form action="@routes.MapController.visualiseTopic()" method="GET">
-        <input type="text" name="topic" value="@topic"/>
+        <input type="text" name="topic" value="@topic" required/>
     </form>
 
     <li><a href="@routes.StatsController.visualiseWordFrequency()?topic=@topic">Commonly associated words</a></li>

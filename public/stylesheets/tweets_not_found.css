@@ -1,0 +1,29 @@
+p#not-found-explanation {
+    margin-top: 40px;
+    text-align: center;
+}
+
+form.suggested-topic {
+    width: 300px;
+    margin: auto;
+}
+
+form.suggested-topic input[type="submit"] {
+    width: 300px;
+    font-size: 16px;
+    margin-top: 20px;
+    border-radius: 30px;
+    border: 1px solid lightgrey;
+    padding: 5px 7px;
+}
+
+form.suggested-topic input[type="submit"]:focus {
+     outline: none;
+}
+
+form.suggested-topic input[type="submit"]:hover {
+    color: white;
+    border: 1px solid #100025;
+    background-color: #100025;
+    cursor: pointer;
+}

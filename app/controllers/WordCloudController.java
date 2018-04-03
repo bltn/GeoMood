@@ -22,8 +22,8 @@ public class WordCloudController extends Controller {
         List<Tweet> tweets = repo.findTweetsWithTopic(topic);
 
         Map<String, Integer> wordOccurences = WordCounter.getWordCounts(tweets);
-        Map<String, Integer> wordOccurencesSorted = MapUtil.getTop50(wordOccurences);
+        Map<String, Integer> top50WordOccurences = MapUtil.getTop50(wordOccurences);
 
-        return ok(wordcloud.render(topic, wordOccurencesSorted));
+        return ok(wordcloud.render(topic, top50WordOccurences));
     }
 }

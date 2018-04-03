@@ -4,5 +4,21 @@
     @common.nav()
     @common.toolbar(topic)
 
-    <h1>No tweets could be found for topic "@topic". <a href="@routes.HomeController.renderHomePage">Try again.</a></h1>
+    <p id="not-found-explanation">No tweets could be found for topic <strong>"@topic"</strong>. But don't despair! Here are some popular topics
+    people are tweeting about:</p>
+
+    <form action="@routes.MapController.visualiseTopic()" method="GET" class="suggested-topic">
+        <input type="hidden" name="topic" value="lecturer strike" />
+        <input type="submit" value="UK Lecturer Strike">
+    </form>
+
+    <form action="@routes.MapController.visualiseTopic()?topic=skripal" method="GET" class="suggested-topic">
+        <input type="hidden" name="topic" value="skripal" />
+        <input type="submit" value="Skripal Poisoning">
+    </form>
+
+    <form action="@routes.MapController.visualiseTopic()?topic=brexit" method="GET" class="suggested-topic">
+        <input type="hidden" name="topic" value="brexit" />
+        <input type="submit" value="Brexit">
+    </form>
 }
