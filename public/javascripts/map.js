@@ -23,9 +23,8 @@ function initMap() {
     }
 
     if (tweets.length > 0) {
-        // Start the map focused on the first tweet
-        var firstTweetLocation;
-        firstTweetLocation = {lat: Number(tweets[0].dataset.lat), lng: Number(tweets[0].dataset.lng)}
+        // Start the map centred on the north atlantic
+        var firstTweetLocation = {lat: 44.700051, lng: -29.712945}
         // construct the Google map
         var map = constructGoogleMap('map', firstTweetLocation);
 
@@ -56,7 +55,7 @@ function initMap() {
 
 function constructGoogleMap(htmlContainerId, firstTweetLocation) {
     var map = new google.maps.Map(document.getElementById(htmlContainerId), {
-        zoom: 4,
+        zoom: 3,
         center: firstTweetLocation,
         mapTypeId: 'roadmap'
     });
