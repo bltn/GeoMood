@@ -10,8 +10,6 @@ google.charts.setOnLoadCallback(drawWordFrequencyBarChart);
 function drawWordFrequencyBarChart() {
     var words = document.getElementsByClassName("word");
 
-
-
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Word');
     data.addColumn('number', 'Word frequency');

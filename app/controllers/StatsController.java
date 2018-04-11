@@ -27,9 +27,8 @@ public class StatsController extends Controller {
         List<Tweet> tweets = fetchAllTweets(topic, DBEnvironment.PRODUCTION);
 
         Map<String, Integer> wordOccurences = WordCounter.getWordCounts(tweets);
-        Map<String, Integer> top50WordOccurences = MapUtil.getTop50(wordOccurences);
-
-        return ok(word_frequency.render(topic, top50WordOccurences));
+        Map<String, Integer> top15WordOccurences = MapUtil.getTop15(wordOccurences);
+        return ok(word_frequency.render(topic, top15WordOccurences));
     }
 
     public Result visualiseGeographicalAreas() {
