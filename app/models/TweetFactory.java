@@ -2,7 +2,7 @@ package models;
 
 import com.google.maps.model.LatLng;
 import service.geo.LocationTranslator;
-import service.NLP;
+import service.TweetSentiment;
 import twitter4j.GeoLocation;
 import twitter4j.Status;
 
@@ -51,7 +51,7 @@ public class TweetFactory {
         tweet.setText(status.getText());
         tweet.setGeoLocation(status.getGeoLocation());
         tweet.setUserLocation(status.getUser().getLocation());
-        tweet.setSentimentValue(NLP.getSentiment(status.getText()));
+        tweet.setSentimentValue(TweetSentiment.getSentiment(status.getText()));
         tweet.setTweetId(status.getId());
 
         return tweet;

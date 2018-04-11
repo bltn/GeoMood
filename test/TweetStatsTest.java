@@ -21,15 +21,6 @@ public class TweetStatsTest {
     }
 
     @Test
-    public void getTweetSentimentPercentages() {
-        Map<String, Double> sentimentPercentages = TweetStats.getSentimentPercentages(tweets);
-
-        assertEquals(50, Math.round(sentimentPercentages.get("positive")));
-        assertEquals(33, Math.round(sentimentPercentages.get("neutral")));
-        assertEquals(17, Math.round(sentimentPercentages.get("negative")));
-    }
-
-    @Test
     public void getTweetSentimentFrequency() {
         Map<String, Double> sentimentFrequencies = TweetStats.getSentimentFrequency(tweets);
 

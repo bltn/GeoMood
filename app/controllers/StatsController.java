@@ -32,7 +32,7 @@ public class StatsController extends Controller {
         return ok(word_frequency.render(topic, top50WordOccurences));
     }
 
-    public Result visualiseAllTopicCategories() {
+    public Result visualiseGeographicalAreas() {
         topic = request().getQueryString("topic");
 
         List<Tweet> allTweets = fetchAllTweets(topic, DBEnvironment.PRODUCTION);

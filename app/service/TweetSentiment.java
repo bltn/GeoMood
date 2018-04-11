@@ -12,19 +12,8 @@ import twitter4j.Status;
 import java.util.*;
 
 
-public class NLP {
+public class TweetSentiment {
     static StanfordCoreNLP pipeline;
-
-    public static Map<String, Integer> getSentimentMapping(List<Status> tweets) {
-        init();
-
-        Map<String, Integer> sentimentMapping = new HashMap<String, Integer>();
-
-        for (Status tweet : tweets) {
-            sentimentMapping.put(tweet.getText(), getDominantSentiment(tweet.getText()));
-        }
-        return sentimentMapping;
-    }
 
     public static int getSentiment(String tweet) {
         init();
@@ -36,10 +25,8 @@ public class NLP {
         if (tweet != null && tweet.length() > 0) {
             int longest = 0;
             Annotation annotation = pipeline.process(tweet);
-            for (CoreMap sentence : annotation
-                    .get(CoreAnnotations.SentencesAnnotation.class)) {
-                Tree tree = sentence
-                        .get(SentimentCoreAnnotations.SentimentAnnotatedTree.class);
+            for (CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class)) {
+                Tree tree = sentence.get(SentimentCoreAnnotations.SentimentAnnotatedTree.class);
                 int sentiment = RNNCoreAnnotations.getPredictedClass(tree);
                 String partText = sentence.toString();
                 if (partText.length() > longest) {
@@ -48,8 +35,11 @@ public class NLP {
                 }
 
             }
+            return dominantSentiment;
+        } else {
+            return -1;
         }
-        return dominantSentiment;
+
     }
 
     private static void init() {

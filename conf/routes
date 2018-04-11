@@ -9,7 +9,7 @@ GET     /                               controllers.HomeController.renderHomePag
 GET     /assets/*file                   controllers.Assets.at(path="/public", file)
 
 GET     /Map/visualiseTopic             controllers.MapController.visualiseTopic
-GET     /Stats/visualiseAll             controllers.StatsController.visualiseAllTopicCategories
+GET     /Stats/visualiseAll             controllers.StatsController.visualiseGeographicalAreas
 GET     /WordCloud/visualise            controllers.WordCloudController.visualiseTopic
 GET     /Stats/wordFrequencies          controllers.StatsController.visualiseWordFrequency
 GET     /Tweets/showList                controllers.TweetListController.visualiseTopic

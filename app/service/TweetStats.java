@@ -13,29 +13,6 @@ public class TweetStats {
         return sentimentFrequencies;
     }
 
-    public static Map<String,Double> getSentimentPercentages(List<Tweet> tweets) {
-        Map<String, Double> sentimentPercentages = mapSentimentPercentages(tweets);
-        return sentimentPercentages;
-    }
-
-    private static Map<String,Double> mapSentimentPercentages(List<Tweet> tweets) {
-        Map<String, Double> sentimentFrequencies = mapSentimentFrequencies(tweets);
-        Map<String, Double> sentimentPercentages = getBlankSentimentMap();
-
-        Double totalTweetCount = sentimentFrequencies.get("positive") + sentimentFrequencies.get("neutral")
-                + sentimentFrequencies.get("negative");
-
-        Double positivePercentage = (sentimentFrequencies.get("positive") * 100.0) / totalTweetCount;
-        Double neutralPercentage = (sentimentFrequencies.get("neutral") * 100.0) / totalTweetCount;
-        Double negativePercentage = (sentimentFrequencies.get("negative") * 100.0) / totalTweetCount;
-
-        sentimentPercentages.put("positive", positivePercentage);
-        sentimentPercentages.put("neutral", neutralPercentage);
-        sentimentPercentages.put("negative", negativePercentage);
-
-        return sentimentPercentages;
-    }
-
     private static Map<String, Double> mapSentimentFrequencies(List<Tweet> tweets) {
         Map<String, Double> sentimentFrequencies = getBlankSentimentMap();
 
