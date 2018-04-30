@@ -9,12 +9,11 @@ import twitter4j.GeoLocation;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 public class TweetRepositoryTest {
 
-    private Tweet brexitTweet;
-    private Tweet collegeTweet;
     private Tweet upperCaseTweet;
     private Tweet lowerCaseTweet;
     private TweetRepository tweetRepo;
@@ -25,73 +24,45 @@ public class TweetRepositoryTest {
 
         tweetRepo.removeAll();
 
-        brexitTweet = new Tweet();
-        brexitTweet.setText("brexit was a very bad idea");
-        brexitTweet.setUserLocation("Manchester, UK");
-        brexitTweet.setGeoLocation(new GeoLocation(53.4808, 2.2426));
-
-        collegeTweet = new Tweet();
-        collegeTweet.setText("this tweet talks about college ok");
-        collegeTweet.setUserLocation("Manchester, UK");
-        collegeTweet.setGeoLocation(new GeoLocation(53.4808, 2.2426));
-
         upperCaseTweet = new Tweet();
         upperCaseTweet.setText("CASE CASE");
         upperCaseTweet.setUserLocation("Manchester, UK");
-        upperCaseTweet.setGeoLocation(new GeoLocation(53.4808, 2.2426));
+        upperCaseTweet.setGeoLocation(new GeoLocation(53.4808, -2.2426));
 
         lowerCaseTweet = new Tweet();
         lowerCaseTweet.setText("case case");
         lowerCaseTweet.setUserLocation("Manchester, UK");
-        lowerCaseTweet.setGeoLocation(new GeoLocation(53.4808, 2.2426));
+        lowerCaseTweet.setGeoLocation(new GeoLocation(53.4808, -2.2426));
     }
 
     @Test
     public void saveValidTweet() {
-        assert(tweetRepo.save(brexitTweet));
+        long before = tweetRepo.getCount();
+        tweetRepo.save(lowerCaseTweet);
+        assert(tweetRepo.getCount() == (before + 1));
     }
 
     @Test
     public void saveWithNoGeoLocation() {
-        brexitTweet.setGeoLocation(null);
-        assertFalse(tweetRepo.save(brexitTweet));
-    }
-
-    @Test
-    public void saveWithNoUserLocation() {
-        brexitTweet.setUserLocation(null);
-        assert(tweetRepo.save(brexitTweet));
-    }
-
-    @Test
-    public void saveWithNoUserLocationOrGeoLocation() {
-        brexitTweet.setGeoLocation(null);
-        brexitTweet.setUserLocation(null);
-        assertFalse(tweetRepo.save(brexitTweet));
-        brexitTweet.setUserLocation("");
-        assertFalse(tweetRepo.save(brexitTweet));
-        brexitTweet.setUserLocation("   ");
-        assertFalse(tweetRepo.save(brexitTweet));
+        long before = tweetRepo.getCount();
+        lowerCaseTweet.setGeoLocation(null);
+        assertEquals(tweetRepo.getCount(), before);
     }
 
     @Test
     public void findTweetWithExistentTopic() {
-        tweetRepo.save(collegeTweet);
-        tweetRepo.save(brexitTweet);
+        tweetRepo.save(lowerCaseTweet);
+        tweetRepo.save(upperCaseTweet);
 
-        List<Tweet> matchingTweets = tweetRepo.findTweetsWithTopic("college");
-        assert(matchingTweets.size() == 1);
-        assert(matchingTweets.get(0).getText().equals(collegeTweet.getText()));
-
-        matchingTweets = tweetRepo.findTweetsWithTopic("brexit");
-        assert(matchingTweets.size() == 1);
-        assert(matchingTweets.get(0).getText().equals(brexitTweet.getText()));
+        List<Tweet> matchingTweets = tweetRepo.findTweetsWithTopic("case");
+        assert(matchingTweets.size() == 2);
+        assert(matchingTweets.get(0).getText().equals(lowerCaseTweet.getText()));
     }
 
     @Test
     public void findTweetWithNonExistentTopic() {
-        tweetRepo.save(collegeTweet);
-        tweetRepo.save(brexitTweet);
+        tweetRepo.save(lowerCaseTweet);
+        tweetRepo.save(upperCaseTweet);
 
         List<Tweet> matchingTweets = tweetRepo.findTweetsWithTopic("i dont exist lalalalaalalala");
         assert(matchingTweets.size() == 0);
@@ -104,5 +75,49 @@ public class TweetRepositoryTest {
 
         List<Tweet> caseInsensitiveMatches = tweetRepo.findTweetsWithTopic("cAsE CaSe");
         assert(caseInsensitiveMatches.size() == 2);
+    }
+
+    @Test
+    public void findUSCanadaTweets() {
+        createAndSaveUSCanadaTweets(4);
+        assertEquals(4, tweetRepo.findUSCanadaTweetsWithTopic("sample topic").size());
+    }
+
+    @Test
+    public void findEUTweets() {
+        createAndSaveEUTweets(4);
+        assertEquals(4, tweetRepo.findEUTweetsWithTopic("sample topic").size());
+    }
+
+    @Test
+    public void findUKTweets() {
+        // both tweets have their coordinates set to Manchester UK
+        tweetRepo.save(lowerCaseTweet);
+        tweetRepo.save(upperCaseTweet);
+        assertEquals(2, tweetRepo.findUKTweetsWithTopic("case case").size());
+    }
+
+    private void createAndSaveEUTweets(int numTweets) {
+        double parisLat = 48.8566;
+        double parisLng = 2.3522;
+
+        for (int i = 0; i < numTweets; i++) {
+            Tweet tweet = new Tweet();
+            tweet.setText("sample topic " + i);
+            tweet.setGeoLocation(new GeoLocation(parisLat, parisLng));
+            tweetRepo.save(tweet);
+        }
+    }
+
+    private void createAndSaveUSCanadaTweets(int numTweets) {
+        double sanFranciscoLat = 37.773972;
+        double sanFranciscoLng = -122.431297;
+
+        for (int i = 0; i < numTweets; i++) {
+            Tweet tweet = new Tweet();
+            tweet.setText("sample topic " + i);
+            tweet.setGeoLocation(new GeoLocation(sanFranciscoLat, sanFranciscoLng));
+            tweetRepo.save(tweet);
+        }
     }
 }
