@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
 
 public class TweetRepository extends Repository {
 
-
     public TweetRepository(String dbName, String collectionName) {
         super(dbName, collectionName);
     }
@@ -24,10 +23,6 @@ public class TweetRepository extends Repository {
             return true;
         }
         return false;
-    }
-
-    public void remove(Tweet t) {
-        collection.remove(t.getId());
     }
 
     public void removeAll() {
@@ -72,7 +67,6 @@ public class TweetRepository extends Repository {
     }
 
     private MongoCursor<Tweet> fetchByTopic(String topic) {
-        //MongoCursor<Tweet> matchingTweets = collection.find("{text:#}", Pattern.compile(".*"+topic+".*", Pattern.CASE_INSENSITIVE)).as(Tweet.class);
         MongoCursor<Tweet> matchingTweets = collection.find("{text: {$regex: '.*"+topic+".*', '$options' : 'i'}}").as(Tweet.class);
 
         return matchingTweets;

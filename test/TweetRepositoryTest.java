@@ -80,7 +80,6 @@ public class TweetRepositoryTest {
         tweetRepo.save(brexitTweet);
 
         List<Tweet> matchingTweets = tweetRepo.findTweetsWithTopic("college");
-        System.out.println(matchingTweets.size());
         assert(matchingTweets.size() == 1);
         assert(matchingTweets.get(0).getText().equals(collegeTweet.getText()));
 

@@ -8,12 +8,11 @@ window.onload = function() {
         var count = Number(words[i].dataset.count);
 
         var option = {};
-        option['text'] = txt;
-        option['size'] = count;
+        option[text] = txt;
+        option[size] = count;
 
         wordsArray.push(option);
     }
-
 
     d3.wordcloud()
         .size([800, 400])

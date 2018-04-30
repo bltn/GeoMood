@@ -11,7 +11,6 @@ import twitter4j.Status;
 
 import java.util.*;
 
-
 public class TweetSentiment {
     static StanfordCoreNLP pipeline;
 
@@ -33,7 +32,6 @@ public class TweetSentiment {
                     dominantSentiment = sentiment;
                     longest = partText.length();
                 }
-
             }
             return dominantSentiment;
         } else {
